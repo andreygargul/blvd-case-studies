@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BLVD Next Gen Booking Experience — Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../shared.css" />
+
+  <style>
+    /* ── Page-specific styles (next-gen-booking) ── */
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <h1 class="hero-title"><em>Next Gen Booking Experience</em></h1>
+      <p class="hero-tagline">Coming soon.</p>
+    </div>
+  </section>
+
+  <script>
+    const blocks = document.querySelectorAll('.block');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    blocks.forEach((block) => observer.observe(block));
+  </script>
+</body>
+</html>

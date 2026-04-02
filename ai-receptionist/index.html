@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BLVD AI Receptionist — Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../shared.css" />
+
+  <style>
+    /* ── Page-specific styles (ai-receptionist) ── */
+
+    /* ═══════════════════════════════════════════════════════════
+       1. HERO
+    ═══════════════════════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      min-height: 88svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px var(--gutter);
+      overflow: hidden;
+    }
+
+    /* Subtle radial glow at top */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(206, 170, 117, 0.12) 0%, transparent 70%),
+        linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    /* Subtle grid texture */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 80%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: var(--body-xs);
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 32px;
+    }
+
+
+    .hero-title {
+      font-size: var(--title-xl);
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 1.0;
+      color: var(--text-primary);
+      margin-bottom: 28px;
+    }
+
+    /* Gradient text on the product name */
+    .hero-title em {
+      font-style: normal;
+      background: linear-gradient(135deg, #fff 30%, rgba(206,170,117,0.8) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-tagline {
+      font-size: var(--body-lg);
+      font-weight: 300;
+      color: var(--text-secondary);
+      letter-spacing: -0.01em;
+      line-height: 1.6;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ─── Audio player ───────────────────────────────────────── */
+    .audio-player {
+      margin-top: 64px;
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      padding: 10px 20px 10px 10px;
+    }
+
+    .audio-play-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: opacity 0.2s;
+    }
+    .audio-play-btn:hover { opacity: 0.8; }
+    .audio-play-btn svg { width: 14px; height: 14px; fill: #0A0A0A; }
+
+    .audio-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+    }
+    .audio-label {
+      font-size: var(--body-xs);
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+    }
+    .audio-progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .audio-progress {
+      width: 140px;
+      height: 2px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 2px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .audio-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.1s linear;
+    }
+    .audio-time {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       2. META STRIP
+    ═══════════════════════════════════════════════════════════ */
+    .meta-strip {
+      border-top: 1px solid var(--border);
+      padding: 24px 0;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: auto 1fr 1fr 1fr;
+      gap: 0;
+    }
+
+    .meta-item {
+      background: var(--bg);
+      padding: 24px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border-right: 1px solid var(--border);
+    }
+
+    .meta-item:first-child { padding-left: 0; }
+    .meta-item:last-child  { padding-right: 0; border-right: none; }
+
+    .meta-value {
+      font-size: var(--body-sm);
+      font-weight: 300;
+      color: var(--text-secondary);
+      letter-spacing: 0;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       CONTENT SECTIONS
+    ═══════════════════════════════════════════════════════════ */
+
+    /* ─── Intro ──────────────────────────────────────────────── */
+    .intro {
+      padding: 96px 0 80px;
+      border-top: 1px solid var(--border);
+    }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .intro-left .label {
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    .intro-tagline {
+      font-size: clamp(18px, 2vw, 24px);
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      line-height: 1.35;
+    }
+
+    .intro-right p {
+      font-size: var(--body-lg);
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      letter-spacing: -0.01em;
+    }
+
+    .intro-right p + p { margin-top: 20px; }
+
+    /* ─── Problem ────────────────────────────────────────────── */
+    .problem {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .problem-pull {
+      font-size: clamp(20px, 2.2vw, 26px);
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: -0.025em;
+      line-height: 1.3;
+      padding-left: 20px;
+      border-left: 3px solid var(--accent);
+    }
+
+    .problem-right p {
+      font-size: var(--body-md);
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .problem-right p + p { margin-top: 16px; }
+
+    /* ─── Gameplan ───────────────────────────────────────────── */
+    .gameplan {
+      padding: 64px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .gameplan-inner {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .gameplan-label-col .label { display: block; padding-top: 4px; }
+
+    .gameplan-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .gameplan-step {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 16px;
+      align-items: baseline;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .gameplan-step:first-child { border-top: 1px solid var(--border); }
+
+    .gameplan-step-num {
+      font-size: var(--body-xs);
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      padding-top: 1px;
+    }
+
+    .gameplan-step-text {
+      font-size: var(--body-md);
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    .gameplan-step-text span {
+      color: var(--text-secondary);
+      font-weight: 300;
+    }
+
+    /* ─── Process ────────────────────────────────────────────── */
+    .process {
+      padding: 80px 0 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .process-header {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 80px;
+      margin-bottom: 64px;
+      align-items: end;
+    }
+
+    .process-header h2 {
+      font-size: var(--title-lg);
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      color: var(--text-primary);
+      margin-top: 16px;
+    }
+
+    .process-header p {
+      font-size: var(--body-lg);
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .process-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .process-item {
+      display: grid;
+      grid-template-columns: 80px 1fr 48px;
+      gap: 40px;
+      padding: 48px 0;
+      border-top: 1px solid var(--border);
+      align-items: start;
+    }
+
+    .process-num {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      padding-top: 4px;
+    }
+
+    .process-content h3 {
+      font-size: clamp(18px, 2vw, 22px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .process-content p {
+      font-size: var(--body-md);
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      max-width: 600px;
+    }
+
+    .process-content p + p { margin-top: 12px; }
+
+    .process-icon {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
+      padding-top: 2px;
+      opacity: 0.4;
+    }
+
+    .process-icon svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ─── Part heading ───────────────────────────────────────── */
+    .part-heading {
+      padding: 96px 0 64px;
+      border-top: 1px solid var(--border);
+    }
+
+    .part-heading-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .part-heading h2 {
+      font-size: var(--title-lg);
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      color: var(--text-primary);
+      margin-top: 16px;
+    }
+
+    .part-heading-right p {
+      font-size: var(--body-lg);
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .part-heading-right p + p { margin-top: 16px; }
+
+    /* ─── Hero video ─────────────────────────────────────────── */
+    .hero-video {
+      width: 100%;
+      max-width: 70%;
+      border-radius: 8px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* ─── Responsive (page-specific) ────────────────────────── */
+    @media (max-width: 768px) {
+      .hero-video { max-width: 100%; }
+      .hero { min-height: 90svh; padding: 80px var(--gutter); }
+      .hero-title { letter-spacing: -0.03em; }
+      .intro-grid { grid-template-columns: 1fr; gap: 32px; }
+      .problem-grid { grid-template-columns: 1fr; gap: 32px; }
+      .gameplan-inner { grid-template-columns: 1fr; gap: 24px; }
+      .process-header { grid-template-columns: 1fr; gap: 24px; }
+      .process-item { grid-template-columns: 40px 1fr; gap: 24px; }
+      .process-icon { display: none; }
+      .part-heading-grid { grid-template-columns: 1fr; gap: 32px; }
+      .video-grid-inner { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .video-grid-2x2-inner { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════
+       1. HERO
+  ══════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">
+        <img src="media/img/BLVD | Wordmark White.png" alt="BLVD" style="height:16px;display:block;opacity:0.9;" />
+      </div>
+      <h1 class="hero-title"><em>Voice AI Receptionist</em></h1>
+      <p class="hero-tagline">Small team, tight timeline, extreme ownership. No role boundaries, no egos. Just everyone doing whatever it takes to ship. That's exactly how I like to work.</p>
+
+      <div class="audio-player" id="audioPlayer">
+        <button class="audio-play-btn" id="audioPlayBtn" aria-label="Play demo call">
+          <svg id="audioPlayIcon" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+        </button>
+        <div class="audio-meta">
+          <div class="audio-progress-wrap">
+            <div class="audio-progress" id="audioProgressBar">
+              <div class="audio-progress-fill" id="audioProgressFill"></div>
+            </div>
+            <span class="audio-time" id="audioTime">0:00 / 2:03</span>
+          </div>
+        </div>
+        <audio id="audioDemoCall" src="media/audio/demo-call-abundant-compressed.mp3" preload="metadata"></audio>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       2. META STRIP
+  ══════════════════════════════════════ -->
+  <div class="meta-strip block">
+    <div class="wrap">
+      <div class="meta-grid">
+        <div class="meta-item">
+          <span class="meta-value">2025</span>
+        </div>
+        <div class="meta-item">
+          <span class="label">Goal</span>
+          <span class="meta-value">Ship a live pilot with real customers</span>
+        </div>
+        <div class="meta-item">
+          <span class="label">Role</span>
+          <span class="meta-value">Product Design · Conversation Design · Customer Research</span>
+        </div>
+        <div class="meta-item">
+          <span class="label">Team</span>
+          <span class="meta-value">Product Manager, Product Designer, Engineer</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PROBLEM
+  ══════════════════════════════════════ -->
+  <section class="problem block">
+    <div class="wrap">
+      <div class="problem-grid">
+        <div class="problem-left">
+          <span class="label">The Problem</span>
+          <p class="problem-pull" style="margin-top:20px;">Stylists build careers.<br>Front desk is a job.</p>
+        </div>
+        <div class="problem-right">
+          <p>Everyone assumes this is about saving time. Fewer missed calls, faster bookings. True, but secondary. The real problem is turnover. It takes a month to train someone who's gone in six. AI doesn't quit. Salons are skeptical by default. We had to prove it could work before anyone would trust it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       GAMEPLAN
+  ══════════════════════════════════════ -->
+  <section class="gameplan block">
+    <div class="wrap">
+      <div class="label" style="margin-bottom:32px;">Gameplan</div>
+      <div class="three-col-grid">
+        <div class="col-card">
+          <span class="col-card-label">01</span>
+          <h3>Find one customer willing to try it</h3>
+          <p>Build with them, launch, and watch how their clients react.</p>
+        </div>
+        <div class="col-card">
+          <span class="col-card-label">02</span>
+          <h3>Use their testimonial to bring in the next</h3>
+          <p>Expand niche by niche until we have enough signal to scale.</p>
+        </div>
+        <div class="col-card">
+          <span class="col-card-label">03</span>
+          <h3>General availability</h3>
+          <p>Once we know it works reliably across verticals and edge cases.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       3b. HERO MEDIA #1 (Retell)
+  ══════════════════════════════════════ -->
+  <div class="media-block block">
+    <div class="wrap">
+      <video
+        src="media/video/retell.webm"
+        poster="media/video/retell-thumb.png"
+        autoplay
+        loop
+        muted
+        playsinline
+        style="width:100%;border-radius:8px;display:block;"
+      ></video>
+      <div style="width:80%;margin:20px auto 0;">
+        <p style="font-size:var(--body-sm);font-weight:300;color:var(--text-secondary);line-height:1.65;">The nuts and bolts of the Voice AI Receptionist: prompts, tool calls, and the agent configuration behind the conversations.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PROCESS — 5 AREAS
+  ══════════════════════════════════════ -->
+  <section class="process block">
+    <div class="wrap">
+      <div class="process-header">
+        <div>
+          <span class="label">How we got there</span>
+          <h2>Five areas,<br>start to finish</h2>
+        </div>
+        <p>I was involved in each of these. Some more than others. None where I was just watching from the side.</p>
+      </div>
+
+      <div class="process-list">
+
+        <div class="process-item">
+          <span class="process-num">01</span>
+          <div class="process-content">
+            <h3>Customer Recruitment and Research</h3>
+            <p>We recruited pilot customers from day one so we could reach them anytime: questions, prototype tests, gut checks on direction. Talking to front desk workers directly shaped the conversation design in concrete ways.</p>
+            <p>Instead of asking a caller what time and date they want, we tell them the first available slot. In busy salons with no openings for weeks, that one change makes the whole call feel less like a dead end.</p>
+          </div>
+          <div class="process-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+        </div>
+
+        <div class="process-item">
+          <span class="process-num">02</span>
+          <div class="process-content">
+            <h3>Building the Agent</h3>
+            <p>Single prompt? Multi-agent? Conversational flow? We talked to vendors and consultants before picking an approach. Then we hit the first real constraint: our booking API was built for visual flows.</p>
+            <p>Select service, select date, select time. Clean on a screen, useless on a phone call. Someone says "do you have anything Monday or Friday after 3 with Matt?" and the whole structure breaks. The engineer had to rework the API and backend. That left Indra and me to handle prompt engineering and tool calls.</p>
+          </div>
+          <div class="process-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 8h.01M11 8h2M7 12h10"/></svg>
+          </div>
+        </div>
+
+        <div class="process-item">
+          <span class="process-num">03</span>
+          <div class="process-content">
+            <h3>Scoping MVP</h3>
+            <p>The plan was minimal: book the appointment, or transfer to a human. Then we showed the demo to our pilot group and scope started creeping. Most customers wanted to collect a card on file for late cancellations.</p>
+            <p>We added a flow that texts a secure link instead of taking card details over the phone. That unlocked significantly more eligible customers. We held the line elsewhere. No in-app experience yet. I built an n8n-to-Airtable automation to give customers a basic call log they could actually read.</p>
+          </div>
+          <div class="process-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/></svg>
+          </div>
+        </div>
+
+        <div class="process-item">
+          <span class="process-num">04</span>
+          <div class="process-content">
+            <h3>Testing</h3>
+            <p>Demoing an AI agent is easy. Making it work reliably is not. We ran a remote usability panel. Turns out you can submit a phone number instead of a prototype link, and people will just call it.</p>
+            <p>Real inputs, real background noise, things we never would have scripted. Iterated on the agent, ran more sessions, and launched our first pilot customer.</p>
+          </div>
+          <div class="process-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.02z"/></svg>
+          </div>
+        </div>
+
+        <div class="process-item">
+          <span class="process-num">05</span>
+          <div class="process-content">
+            <h3>Evals</h3>
+            <p>Manual call analysis worked but didn't scale. I led the eval process. Two-sided approach: top-down, measuring whether user intent was achieved; bottom-up, tracking specific failure patterns we'd already found: wrong service, wrong time, wrong provider.</p>
+            <p>I also managed the relationship with our testing and monitoring software vendor and onboarded the engineering team to their tooling.</p>
+          </div>
+          <div class="process-icon">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       CTA CALLOUT (mid-page)
+  ══════════════════════════════════════ -->
+  <div class="cta-callout block">
+    <div class="wrap">
+      <div class="cta-callout-inner">
+        <div class="cta-avatar">
+          <img src="media/img/andrey-avatar.png" alt="Andrey Gargul" />
+        </div>
+        <div class="cta-text">
+          <p><strong>Want more details?</strong> I can walk you through the decisions, the dead ends, and what I'd do differently. Book a call.</p>
+        </div>
+        <a href="#contact" class="cta-btn">Get in touch</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       CLOSING
+  ══════════════════════════════════════ -->
+  <section class="closing block">
+    <div class="wrap">
+      <div class="closing-inner">
+        <p><strong>The team doubled. New customer cohorts every two weeks.</strong> Time to retire the Airtable dashboard and build a real in-app experience.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       PART 2 — IN-APP EXPERIENCE
+  ══════════════════════════════════════ -->
+  <section class="part-heading block">
+    <div class="wrap">
+      <div class="part-heading-grid">
+        <div>
+          <span class="label">In-App Experience</span>
+          <h2>From Airtable<br>to inbox</h2>
+        </div>
+        <div class="part-heading-right">
+          <p>Customers needed to know three things: what calls the AI picked up, what happened, and whether they needed to do anything. That was my Airtable dashboard: a call log with date, time, phone number, a summary, and a status: transferred, completed, or needs callback.</p>
+          <p>My first move was cleaning it up and sending it to our customer success team. They've worked salon jobs and I use them as a quick gut check. They loved it. Mostly. One piece of feedback didn't sit right: if a staff member called the client back, they wanted to update the call status to completed.</p>
+          <p><strong style="color:var(--text-primary);">They didn't care about the call status. They cared about whether the issue was resolved.</strong> Issues can take multiple calls. And not just calls. We were already texting clients secure links to complete bookings. The whole interaction spanned channels.</p>
+          <p>So instead of Calls, I shifted focus to Conversations. Conversation status maps to issue status far more cleanly. And we already had a home for them: the Messages inbox. Close a thread when you're done.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       INAPP VIDEO
+  ══════════════════════════════════════ -->
+  <div class="media-block block">
+    <div class="wrap">
+      <video
+        src="media/video/inapp2-small.webm"
+        poster="media/video/inapp-thumb.png"
+        autoplay
+        loop
+        muted
+        playsinline
+        style="width:100%;border-radius:8px;display:block;"
+      ></video>
+      <div style="width:80%;margin:20px auto 0;">
+        <p style="font-size:var(--body-sm);font-weight:300;color:var(--text-secondary);line-height:1.65;">One conversation across channels: starts as a text, continues on a call, ends with a link to complete the booking.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       INBOX CHALLENGE TEXT
+  ══════════════════════════════════════ -->
+  <section class="text-block block">
+    <div class="wrap">
+      <div class="text-block-grid">
+        <div><span class="label">Design Details</span></div>
+        <div class="text-block-right">
+          <p>That introduced a new problem. The inbox is a busy place, and my focus group worried AI actions would get lost in it. I needed to make the AI's presence explicitly visible without cluttering the experience.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       4b. VIDEO GRID
+  ══════════════════════════════════════ -->
+  <section class="video-grid block">
+    <div class="wrap">
+      <div class="video-grid-inner">
+        <div class="video-grid-item">
+          <video src="media/video/agent-actions.webm" poster="media/video/agent-actions-thumb.png" loop muted playsinline></video>
+          <div class="video-caption">
+            <p class="video-caption-title">Agent Actions</p>
+            <p class="video-caption-body">Explicitly show what action the agent took after the call: booked, transferred, or flagged.</p>
+          </div>
+        </div>
+        <div class="video-grid-item">
+          <video src="media/video/avatars.mp4" poster="media/video/avatars-thumb.png" loop muted playsinline></video>
+          <div class="video-caption">
+            <p class="video-caption-title">Participant Avatars</p>
+            <p class="video-caption-body">Show everyone who participated in a conversation, including the AI receptionist.</p>
+          </div>
+        </div>
+        <div class="video-grid-item">
+          <video src="media/video/filter.webm" poster="media/video/filter-thumb.png" loop muted playsinline></video>
+          <div class="video-caption">
+            <p class="video-caption-title">Filters</p>
+            <p class="video-caption-body">Quickly surface conversations that need attention, without scanning the entire inbox.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       PROTOTYPE PANEL
+  ══════════════════════════════════════ -->
+  <div class="proto-panel block">
+    <div class="wrap">
+      <div class="proto-panel-inner">
+        <div class="proto-panel-text">
+          <span class="proto-label">Prototype</span>
+          <h3>See it for yourself</h3>
+          <p>It's the front-end, not the full agent. Click around, open a conversation. See if you like it.</p>
+        </div>
+        <a href="#" class="proto-btn">
+          Check it out
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 7h10M7 2l5 5-5 5"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       INBOX PIVOT TEXT
+  ══════════════════════════════════════ -->
+  <section class="text-block block">
+    <div class="wrap">
+      <div class="text-block-grid">
+        <div><span class="label">Call History</span></div>
+        <div class="text-block-right">
+          <p>Once the team and pilot customers saw the potential, they got excited about the multichannel inbox. Some even started questioning whether we needed Call History at all.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       4c. HERO MEDIA (Calls)
+  ══════════════════════════════════════ -->
+  <div class="media-block block">
+    <div class="wrap">
+      <video
+        src="media/video/calls.webm"
+        poster="media/video/calls-thumb.png"
+        autoplay
+        loop
+        muted
+        playsinline
+        style="width:100%;border-radius:8px;display:block;"
+      ></video>
+      <div style="width:80%;margin:20px auto 0;">
+        <p style="font-size:var(--body-sm);font-weight:300;color:var(--text-secondary);line-height:1.65;">A few things it does better than the inbox. You can see at a glance every call the AI picked up, and for customers just starting with AI tools, that visibility builds trust. We're also thinking about future outbound calls that won't fit naturally into a conversation inbox.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       BAD SMELL TEXT + 2x2 GRID
+  ══════════════════════════════════════ -->
+  <section class="text-block block">
+    <div class="wrap">
+      <div class="text-block-grid">
+        <div><span class="label">Dead ends included</span></div>
+        <div class="text-block-right">
+          <p>Case studies show the path you picked. Not the three you tried first. Every decision here had versions that almost shipped. That part doesn't make the write-up, but it's where most of the thinking happened.</p>
+          <p>Call History is a good example. I stripped statuses and moved them to conversation threads. Right call. But I kept worrying customers would anchor on the summary and miss the full context behind it. First fix: make the whole row clickable, linking to the conversation. Slightly off. You click a call record and land in a message thread. Small mismatch. I call it a "bad smell": not broken, just structurally wrong. Two calls pointing to the same conversation made it obvious. Fixed with a separate, explicit link. A few UI passes to make it clean.</p>
+        </div>
+      </div>
+      <div class="video-grid-2x2-inner" style="margin-top:48px;">
+        <div class="video-grid-2x2-item">
+          <video src="media/video/calls-conv1.webm" autoplay loop muted playsinline></video>
+        </div>
+        <div class="video-grid-2x2-item">
+          <video src="media/video/calls-conv2.webm" autoplay loop muted playsinline></video>
+        </div>
+        <div class="video-grid-2x2-item">
+          <video src="media/video/calls-conv3.webm" autoplay loop muted playsinline></video>
+        </div>
+        <div class="video-grid-2x2-item">
+          <video src="media/video/calls-conv4.webm" autoplay loop muted playsinline></video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       RESULTS
+  ══════════════════════════════════════ -->
+  <section class="results block">
+    <div class="wrap">
+      <div class="results-grid">
+        <div>
+          <span class="label">Results</span>
+        </div>
+        <div class="results-stats">
+          <div class="results-stat">
+            <div class="stat-number"><em>48%</em></div>
+            <p class="stat-label">of calls handled without any human involvement</p>
+          </div>
+          <div class="results-stat">
+            <div class="stat-number"><em>87%</em></div>
+            <p class="stat-label">adherence rate. AI performing tasks correctly.</p>
+          </div>
+          <div class="results-stat">
+            <div class="stat-number"><em>2 weeks</em></div>
+            <p class="stat-label">new customer cohort launch cadence, building toward general availability</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       NEXT CASE STUDY BANNER
+  ══════════════════════════════════════ -->
+  <section class="next-case-study block">
+    <div class="wrap">
+      <p class="next-case-study-label">Next Case Study</p>
+      <a href="#" class="next-case-study-card">
+        <div class="next-cs-top">
+          <h2 class="next-cs-heading">Next Gen Booking Experience</h2>
+          <p class="next-cs-sub">Redesigning how salons book appointments, from first tap to confirmed.</p>
+        </div>
+        <div class="next-cs-bottom">
+          <img src="media/img/BLVD | Wordmark Black.png" alt="BLVD" class="next-cs-logo" />
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       CONTACT
+  ══════════════════════════════════════ -->
+  <section class="contact block" id="contact">
+    <div class="wrap">
+      <div class="contact-inner">
+        <div class="contact-avatar">
+          <img src="media/img/andrey-avatar.png" alt="Andrey Gargul" />
+        </div>
+        <div class="contact-text">
+          <h3>Let's chat</h3>
+          <p>Product designer, 12 years in vertical SaaS. Now doing it with AI in the mix. Always looking for the next interesting problem.</p>
+          <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;">
+            <a href="mailto:gargul.andrey@gmail.com" class="cta-btn">Email me</a>
+            <a href="https://www.linkedin.com/in/andrey-gargul/" class="proto-btn" target="_blank">Reach out on LinkedIn</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const blocks = document.querySelectorAll('.block');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    blocks.forEach((block) => observer.observe(block));
+
+    // Play grid videos on hover (desktop) or always (touch/mobile)
+    const isTouchDevice = window.matchMedia('(hover: none)').matches;
+    document.querySelectorAll('.video-grid-item video').forEach((video) => {
+      if (isTouchDevice) {
+        video.play();
+      } else {
+        video.addEventListener('mouseenter', () => video.play());
+        video.addEventListener('mouseleave', () => { video.loop = false; });
+        video.addEventListener('ended', () => { video.loop = true; video.currentTime = 0; });
+      }
+    });
+
+    // Audio demo player
+    (function () {
+      const audio = document.getElementById('audioDemoCall');
+      const playBtn = document.getElementById('audioPlayBtn');
+      const playIcon = document.getElementById('audioPlayIcon');
+      const fill = document.getElementById('audioProgressFill');
+      const timeEl = document.getElementById('audioTime');
+      const bar = document.getElementById('audioProgressBar');
+
+      const pauseSVG = '<rect x="5" y="3" width="4" height="18"/><rect x="15" y="3" width="4" height="18"/>';
+      const playSVG  = '<polygon points="5,3 19,12 5,21"/>';
+
+      function fmt(s) {
+        const m = Math.floor(s / 60);
+        const sec = Math.floor(s % 60).toString().padStart(2, '0');
+        return `${m}:${sec}`;
+      }
+
+      function updateTime() {
+        const cur = isNaN(audio.currentTime) ? 0 : audio.currentTime;
+        const dur = isNaN(audio.duration) ? 0 : audio.duration;
+        fill.style.width = dur ? `${(cur / dur) * 100}%` : '0%';
+        const durStr = dur ? fmt(dur) : '2:03';
+        timeEl.textContent = `${fmt(cur)} / ${durStr}`;
+      }
+
+      playBtn.addEventListener('click', () => {
+        if (audio.paused) {
+          audio.play();
+          playIcon.innerHTML = pauseSVG;
+        } else {
+          audio.pause();
+          playIcon.innerHTML = playSVG;
+        }
+      });
+
+      audio.addEventListener('timeupdate', updateTime);
+      audio.addEventListener('loadedmetadata', updateTime);
+      audio.addEventListener('ended', () => { playIcon.innerHTML = playSVG; });
+
+      bar.addEventListener('click', (e) => {
+        if (!audio.duration) return;
+        const rect = bar.getBoundingClientRect();
+        audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+      });
+    })();
+  </script>
+</body>
+</html>
