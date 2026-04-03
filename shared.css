@@ -3,6 +3,13 @@
    Used by: ai-receptionist, next-gen-booking
 ================================================================ */
 
+/* ─── Animated border property ──────────────────────────────── */
+@property --sparkle-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
 /* ─── Reset ─────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -109,9 +116,27 @@ body {
 .proto-btn:hover { opacity: 0.85; }
 .proto-btn svg { width: 14px; height: 14px; }
 
+.secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: var(--body-sm);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  padding: 12px 24px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+.secondary-btn:hover { color: var(--text-primary); border-color: rgba(255,255,255,0.2); }
+
 /* ─── Meta strip ─────────────────────────────────────────────── */
 .meta-strip {
-  border-top: 1px solid var(--border);
   padding: 24px 0;
 }
 
@@ -161,9 +186,12 @@ body {
 }
 
 /* ─── Text block ─────────────────────────────────────────────── */
-.text-block {
+.media-block {
   padding: 64px 0;
-  border-top: 1px solid var(--border);
+}
+
+.text-block {
+  padding: 96px 0;
 }
 
 .text-block-grid {
@@ -193,12 +221,51 @@ body {
 }
 
 .cta-callout-inner {
+  position: relative;
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 40px 48px;
   display: flex;
   align-items: center;
   gap: 32px;
+  box-shadow: inset 0 0 0 rgba(80, 200, 255, 0);
+  transition: box-shadow 0.5s ease;
+}
+
+.cta-callout-inner:hover {
+  box-shadow: inset 0 0 48px rgba(80, 200, 255, 0.06);
+}
+
+.cta-callout-inner::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 9px;
+  background: conic-gradient(
+    from var(--sparkle-angle),
+    transparent 0%,
+    transparent 88%,
+    rgba(80, 200, 255, 0.3) 92%,
+    rgba(140, 230, 255, 0.9) 95%,
+    rgba(80, 200, 255, 0.3) 98%,
+    transparent 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  padding: 1px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.cta-callout-inner:hover::after {
+  opacity: 1;
+  animation: sparkle-orbit 2.5s linear infinite;
+}
+
+@keyframes sparkle-orbit {
+  to { --sparkle-angle: 360deg; }
 }
 
 .cta-avatar {
@@ -236,6 +303,7 @@ body {
 }
 
 .proto-panel-inner {
+  position: relative;
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 40px 48px;
@@ -243,6 +311,40 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 40px;
+  box-shadow: inset 0 0 0 rgba(80, 200, 255, 0);
+  transition: box-shadow 0.5s ease;
+}
+
+.proto-panel-inner:hover {
+  box-shadow: inset 0 0 48px rgba(80, 200, 255, 0.06);
+}
+
+.proto-panel-inner::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 9px;
+  background: conic-gradient(
+    from var(--sparkle-angle),
+    transparent 0%,
+    transparent 88%,
+    rgba(80, 200, 255, 0.3) 92%,
+    rgba(140, 230, 255, 0.9) 95%,
+    rgba(80, 200, 255, 0.3) 98%,
+    transparent 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  padding: 1px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.proto-panel-inner:hover::after {
+  opacity: 1;
+  animation: sparkle-orbit 2.5s linear infinite;
 }
 
 .proto-panel-text .proto-label {
@@ -405,7 +507,6 @@ body {
 /* ─── Results ────────────────────────────────────────────────── */
 .results {
   padding: 96px 0;
-  border-top: 1px solid var(--border);
 }
 
 .results-grid {
@@ -445,7 +546,6 @@ body {
 /* ─── Closing ────────────────────────────────────────────────── */
 .closing {
   padding: 80px 0 96px;
-  border-top: 1px solid var(--border);
 }
 
 .closing-inner {
@@ -579,6 +679,55 @@ body {
   height: 10px;
   display: block;
   opacity: 0.7;
+}
+
+/* ─── Video grid (3-up) ──────────────────────────────────────── */
+.video-grid {
+  padding: 0 0 96px;
+}
+
+.video-grid-inner {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.video-grid-item video {
+  width: 100%;
+  border-radius: 8px;
+  display: block;
+}
+
+.video-caption {
+  margin-top: 16px;
+}
+
+.video-caption-title {
+  font-size: var(--body-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.video-caption-body {
+  font-size: var(--body-sm);
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ─── Video grid (2×2) ───────────────────────────────────────── */
+.video-grid-2x2-inner {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.video-grid-2x2-item video {
+  width: 100%;
+  border-radius: 8px;
+  display: block;
 }
 
 /* ─── Responsive ─────────────────────────────────────────────── */
