@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BLVD Next Gen Booking Experience — Case Study</title>
+  <title>BLVD Next-Gen Booking Vision — Case Study</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -11,19 +11,654 @@
 
   <style>
     /* ── Page-specific styles (next-gen-booking) ── */
+
+    /* ═══════════════════════════════════════════════════════════
+       1. HERO
+    ═══════════════════════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      min-height: 88svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px var(--gutter);
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255, 80, 45, 0.08) 0%, transparent 70%),
+        linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 80%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: var(--body-xs);
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 32px;
+    }
+
+    .hero-title {
+      font-size: var(--title-xl);
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 1.0;
+      color: var(--text-primary);
+      margin-bottom: 28px;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      background: linear-gradient(135deg, #fff 30%, rgba(255,80,45,0.85) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-tagline {
+      font-size: var(--body-lg);
+      font-weight: 300;
+      color: var(--text-secondary);
+      letter-spacing: -0.01em;
+      line-height: 1.6;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       CONTENT SECTIONS
+    ═══════════════════════════════════════════════════════════ */
+
+    /* ─── Problem ────────────────────────────────────────────── */
+    .problem {
+      padding: 80px 0;
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .problem-pull {
+      font-size: clamp(20px, 2.2vw, 26px);
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: -0.025em;
+      line-height: 1.3;
+      padding-left: 20px;
+      border-left: 3px solid var(--accent);
+    }
+
+    .problem-right p {
+      font-size: var(--body-md);
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .problem-right p + p { margin-top: 16px; }
+
+    /* ─── Gameplan ───────────────────────────────────────────── */
+    .gameplan {
+      padding: 64px 0;
+    }
+
+    /* ─── Process ────────────────────────────────────────────── */
+    .process {
+      padding: 80px 0 32px;
+    }
+
+    .process-header {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 80px;
+      margin-bottom: 64px;
+      align-items: end;
+    }
+
+    .process-header h2 {
+      font-size: var(--title-lg);
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      color: var(--text-primary);
+      margin-top: 16px;
+    }
+
+    .process-header p {
+      font-size: var(--body-lg);
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .process-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .process-item {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 56px;
+      padding: 48px 0;
+      border-top: 1px solid var(--border);
+      align-items: start;
+    }
+
+    .process-num {
+      font-size: var(--body-xs);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .process-video {
+      border-radius: 8px;
+      overflow: hidden;
+      width: 80%;
+    }
+
+    .process-video video {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+    }
+
+    .process-content h3 {
+      font-size: clamp(18px, 2vw, 22px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .process-content p {
+      font-size: var(--body-md);
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      max-width: 600px;
+    }
+
+    .process-content p + p { margin-top: 12px; }
+
+    /* ─── Proto card ─────────────────────────────────────────── */
+    .proto-hero {
+      padding: 64px 0 80px;
+    }
+
+    .proto-card {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      text-decoration: none;
+      display: block;
+      transition: box-shadow 0.5s ease;
+    }
+
+    .proto-card:hover {
+      box-shadow: inset 0 0 48px rgba(80, 200, 255, 0.06);
+    }
+
+    .proto-card::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 13px;
+      background: conic-gradient(
+        from var(--sparkle-angle),
+        transparent 0%,
+        transparent 88%,
+        rgba(80, 200, 255, 0.3) 92%,
+        rgba(140, 230, 255, 0.9) 95%,
+        rgba(80, 200, 255, 0.3) 98%,
+        transparent 100%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      padding: 1px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+
+    .proto-card:hover::after {
+      opacity: 1;
+      animation: sparkle-orbit 2.5s linear infinite;
+    }
+
+    .proto-card-video video {
+      width: 100%;
+      display: block;
+    }
+
+    .proto-card-footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .proto-card-footer .proto-label {
+      font-size: var(--body-xs);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .proto-card-footer h3 {
+      font-size: clamp(20px, 2.2vw, 28px);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--text-primary);
+    }
+
+    .proto-card-right {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .proto-card-right p {
+      font-size: var(--body-sm);
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* ─── Customization block ───────────────────────────────── */
+    .customization {
+      padding: 80px 0;
+    }
+
+    .customization-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .customization-video {
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .customization-video video {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+    }
+
+    /* ─── Aside note ─────────────────────────────────────────── */
+    .aside-note {
+      padding: 64px 0;
+    }
+
+    .aside-note-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 80px;
+      align-items: start;
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .aside-note-left .label { display: block; }
+
+    .aside-note-right p {
+      font-size: var(--body-md);
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-style: italic;
+    }
+
+    .aside-note-right p + p { margin-top: 12px; }
+
+    /* ─── Responsive ─────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .hero { min-height: 90svh; padding: 80px var(--gutter); }
+      .hero-title { letter-spacing: -0.03em; }
+      .problem-grid { grid-template-columns: 1fr; gap: 32px; }
+      .process-header { grid-template-columns: 1fr; gap: 24px; }
+      .process-item { grid-template-columns: 1fr; gap: 24px; }
+      .process-video { display: none; }
+      .proto-card-footer { grid-template-columns: 1fr; gap: 24px; }
+      .proto-card-right { flex-direction: column; align-items: flex-start; }
+      .customization-grid { grid-template-columns: 1fr; gap: 40px; }
+      .aside-note-inner { grid-template-columns: 1fr; gap: 24px; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- HERO -->
+  <!-- ══════════════════════════════════════
+       1. HERO
+  ══════════════════════════════════════ -->
   <section class="hero">
     <div class="hero-inner">
-      <h1 class="hero-title"><em>Next Gen Booking Experience</em></h1>
-      <p class="hero-tagline">Coming soon.</p>
+      <div class="hero-eyebrow">
+        <img src="../ai-receptionist/media/img/BLVD | Wordmark White.png" alt="BLVD" style="height:16px;display:block;opacity:0.9;" />
+      </div>
+      <h1 class="hero-title"><em>Next-Gen Booking Vision</em></h1>
+      <p class="hero-tagline">Open-ended projects either ship something real or die in a deck. I wasn't going to let this one die.</p>
     </div>
   </section>
 
+  <!-- ══════════════════════════════════════
+       2. META STRIP
+  ══════════════════════════════════════ -->
+  <div class="meta-strip block">
+    <div class="wrap">
+      <div class="meta-grid">
+        <div class="meta-item">
+          <span class="meta-value">2025</span>
+        </div>
+        <div class="meta-item">
+          <span class="label">Goal</span>
+          <span class="meta-value">Create a booking vision every stakeholder could get behind</span>
+        </div>
+        <div class="meta-item">
+          <span class="label">Role</span>
+          <span class="meta-value">Design Lead</span>
+        </div>
+        <div class="meta-item">
+          <span class="label">Team</span>
+          <span class="meta-value">Director of Product, 2 Designers</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PROBLEM
+  ══════════════════════════════════════ -->
+  <section class="problem block">
+    <div class="wrap">
+      <div class="problem-grid">
+        <div class="problem-left">
+          <span class="label">The Problem</span>
+          <p class="problem-pull" style="margin-top:20px;">The booking flow was built for hair salons.<br>Our customers had outgrown it.</p>
+        </div>
+        <div class="problem-right">
+          <p>Boulevard started with salons and barbershops. In recent years, medspas became a growing share of the customer base. Stronger brands, loyalty programs, bigger marketing budgets driving new clients through the door.</p>
+          <p>The booking experience hadn't kept up. Clients arriving from an ad expected a polished journey. They got a form that felt like it was built in 2018.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       GAMEPLAN
+  ══════════════════════════════════════ -->
+  <section class="gameplan block">
+    <div class="wrap">
+      <div class="label" style="margin-bottom:32px;">Gameplan</div>
+      <div class="three-col-grid">
+        <div class="col-card">
+          <span class="col-card-label">01</span>
+          <h3>Audit the pain</h3>
+          <p>Surface what customers actually complain about, not what we assumed.</p>
+        </div>
+        <div class="col-card">
+          <span class="col-card-label">02</span>
+          <h3>First principles</h3>
+          <p>Strip booking down to core user needs and rebuild from there.</p>
+        </div>
+        <div class="col-card">
+          <span class="col-card-label">03</span>
+          <h3>Build the vision</h3>
+          <p>Something concrete enough that every stakeholder can point to and say yes.</p>
+        </div>
+        <div class="col-card">
+          <span class="col-card-label">04</span>
+          <h3>Ship it in pieces</h3>
+          <p>Break the vision into self-contained projects and get them onto the roadmap.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       PROCESS
+  ══════════════════════════════════════ -->
+  <section class="process block">
+    <div class="wrap">
+      <div class="process-header">
+        <div>
+          <span class="label">How we got there</span>
+          <h2>Two directions,<br>one picture</h2>
+        </div>
+        <p>We ran two parallel tracks: bottom-up to find what was broken, top-down to define what good should look like. Neither was enough on its own.</p>
+      </div>
+
+      <div class="process-list">
+
+        <div class="process-item">
+          <div class="process-content">
+            <span class="process-num">01</span>
+            <h3>What's not working</h3>
+            <p>We pulled years of customer feedback and ran competitor analysis. Useful, but not the most revealing part. The real signal came from customers who had built their own booking experiences on top of our API. We could compare them side by side and had conversion data to back it up.</p>
+            <p>One finding stood out. Provider selection and date selection were separate steps. Pick a stylist, then find availability. If the stylist was booked out, you had to go back. Clients hit a wall and dropped off. A structural flaw that had been sitting there for years.</p>
+          </div>
+          <div class="process-video">
+            <video src="media/video/appt-sm.webm" autoplay loop muted playsinline></video>
+          </div>
+        </div>
+
+        <div class="process-item">
+          <div class="process-content">
+            <span class="process-num">02</span>
+            <h3>What good looks like</h3>
+            <p>Ecommerce spent a decade perfecting the path from discovery to purchase. Self-care booking never got that memo. Businesses spend real money on awareness, then hand clients to a booking tool with no memory of what brought them there. Start over. Pick a service from scratch.</p>
+            <p>The drop in conversion is predictable. The strange part is that the whole industry accepted it as normal. No new model needed. Just apply one that already existed somewhere else.</p>
+          </div>
+          <div class="process-video">
+            <video src="media/video/sp-sm.webm" autoplay loop muted playsinline></video>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       PROTOTYPE HERO
+  ══════════════════════════════════════ -->
+  <section class="proto-hero block">
+    <div class="wrap">
+      <a href="#" class="proto-card">
+        <div class="proto-card-video">
+          <video src="media/video/proto-lg.webm" autoplay loop muted playsinline></video>
+        </div>
+        <div class="proto-card-footer">
+          <div class="proto-card-left">
+            <span class="proto-label">Prototype</span>
+            <h3>Walk through<br>the vision</h3>
+          </div>
+          <div class="proto-card-right">
+            <p>The best way to understand the thinking is to experience it. Guided commentary explains the reasoning behind each decision.</p>
+            <span class="proto-btn">
+              Try it
+              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 7h10M7 2l5 5-5 5"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       CUSTOMIZATION
+  ══════════════════════════════════════ -->
+  <section class="customization block">
+    <div class="wrap">
+      <div class="customization-grid">
+        <div class="customization-text">
+          <span class="label">One size fits none</span>
+          <p class="problem-pull" style="margin-top:20px;">Optimize for one business.<br>Accidentally break it for another.</p>
+          <div style="margin-top:24px;">
+            <p style="font-size:var(--body-md);font-weight:300;color:var(--text-secondary);line-height:1.75;">We work with thousands of businesses. A change that lifts conversion for one can quietly hurt another. The real work: knowing where to let businesses customize and where a good default beats a setting.</p>
+            <p style="font-size:var(--body-md);font-weight:300;color:var(--text-secondary);line-height:1.75;margin-top:16px;">Facial bars want maximum availability. Hair salon clients are loyal to their stylist. Massage clients often don't care about the person but do care about gender. Each of those changes the flow order.</p>
+          </div>
+        </div>
+        <div class="customization-video">
+          <video src="media/video/custom.webm" autoplay loop muted playsinline></video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       ASIDE NOTE — STAKEHOLDER MANAGEMENT
+  ══════════════════════════════════════ -->
+  <section class="aside-note block">
+    <div class="wrap">
+      <div class="aside-note-inner">
+        <div class="aside-note-left">
+          <span class="label">On keeping it alive</span>
+        </div>
+        <div class="aside-note-right">
+          <p>I've seen vision projects stall before. Ambitious scope, not enough structure, and stakeholders stop trusting it. From day one, I shared a rough timeline with a clear deliverable at each checkpoint — and at each checkpoint, I tried to show something they didn't expect.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       CTA CALLOUT
+  ══════════════════════════════════════ -->
+  <div class="cta-callout block">
+    <div class="wrap">
+      <div class="cta-callout-inner">
+        <div class="cta-avatar">
+          <img src="../ai-receptionist/media/img/andrey-avatar.png" alt="Andrey Gargul" />
+        </div>
+        <div class="cta-text">
+          <p><strong>Want more details?</strong> I can walk you through the decisions, the research, and what drove the roadmap changes. Book a call.</p>
+        </div>
+        <a href="#contact" class="cta-btn">Get in touch</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCOPE NOTE
+  ══════════════════════════════════════ -->
+  <section class="closing block">
+    <div class="wrap">
+      <div class="closing-inner">
+        <p>This case study covers the new client acquisition side only. <strong>Retention was a separate workstream</strong> — a whole other beast.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       RESULTS
+  ══════════════════════════════════════ -->
+  <section class="results block">
+    <div class="wrap">
+      <div class="results-grid">
+        <div>
+          <span class="label">Outcomes</span>
+        </div>
+        <div class="results-stats">
+          <div class="results-stat">
+            <div class="stat-number"><em>$80M</em></div>
+            <p class="stat-label">Series D round. The founder used the vision in his investor pitch. I presented the work at the Board of Directors meeting.</p>
+          </div>
+          <div class="results-stat">
+            <div class="stat-number"><em>In production</em></div>
+            <p class="stat-label">The vision didn't stay a deck. Phone-based client login, booking flow updates, and other projects spun directly out of it — actively being built across the company.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       CONTACT
+  ══════════════════════════════════════ -->
+  <section class="contact block" id="contact">
+    <div class="wrap">
+      <div class="contact-inner">
+        <div class="contact-avatar">
+          <img src="../ai-receptionist/media/img/andrey-avatar.png" alt="Andrey Gargul" />
+        </div>
+        <div class="contact-text">
+          <h3>Andrey Gargul</h3>
+          <p>Design lead. I work at the intersection of product, research, and shipping things that actually change. <a href="mailto:andrey@example.com">Say hello.</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       NEXT CASE STUDY
+  ══════════════════════════════════════ -->
+  <div class="next-case-study">
+    <p class="next-case-study-label">Next case study</p>
+    <a href="../ai-receptionist/" class="next-case-study-card">
+      <div class="next-cs-top">
+        <p class="next-cs-heading">Voice AI Receptionist</p>
+        <p class="next-cs-sub">Small team, tight timeline, extreme ownership. No role boundaries, no egos. Just everyone doing whatever it takes to ship.</p>
+      </div>
+      <div class="next-cs-bottom">
+        <img src="../ai-receptionist/media/img/BLVD | Wordmark Black.png" alt="BLVD" class="next-cs-logo" />
+      </div>
+    </a>
+  </div>
+
   <script>
+    // Intersection observer for scroll-in animations
     const blocks = document.querySelectorAll('.block');
     const observer = new IntersectionObserver(
       (entries) => {
@@ -37,6 +672,12 @@
       { threshold: 0.1 }
     );
     blocks.forEach((block) => observer.observe(block));
+
+    // Video hover-to-play for grid items
+    document.querySelectorAll('.video-grid-item video').forEach((vid) => {
+      vid.addEventListener('mouseenter', () => vid.play());
+      vid.addEventListener('mouseleave', () => { vid.pause(); vid.currentTime = 0; });
+    });
   </script>
 </body>
 </html>

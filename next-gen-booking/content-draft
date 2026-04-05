@@ -1,0 +1,55 @@
+Title: NexGen Booking Vision
+Subhead: How not to get lost in the project without any constraints except time.
+
+2025
+Role: Design lead
+Team: Director of Product, 2 designers
+Goal: Create a vision of the booking experience taht will make Boulevard standout
+
+Problem:
+Boulevards customer profile has changed. 
+Starting with hair salons and barbershops. 
+In the recent years we got a growing market share of Medspa and other 
+businesses that require more sophisticated booking. 
+They often have stronger brands with memberships and loyalty programs and 
+have a larger marketing budgets to bring new customers. 
+The booking experience built and optimized for our more traditional 
+audience was not cutting it anymore.   
+
+Gameplan:
+1. Find out the limitations of current experience. What do customers complain about.
+2. Rethink from the first principles. What are the core needs of our users.
+3. Create an appealing vision that everu stakeholder can get behind.
+4. Break it into self-contained projects and drive roadmap changes to make it happen. 
+
+
+
+
+Prototype:
+[image]
+The best way to experience the vision is to try the prototype with guided commentary. It will take you through the whole flow and explain the reasoning behind the design decisions.
+[Try Prototype and guided commentary]
+
+A few things about the process:
+
+We blend 2 approaches we went top down - what's the ideal booking experience for a modern salon look like, and bottom-up what's not working today.
+
+Bottom up.
+We went through all customer feedback we collected in teh previous years and competitor analysis. But probably the most insightful was comparing our booking to the 'custom experience' some of our customers built using our APIs since we could not only see the difference but actually compare convesrion rate. One of the big smoking guns was separate Service Provider and Date selection, that was forcing clients to go back if theere were no availability for a selected providers.
+[image]
+
+Top up. 
+We realized that a Shopping journey blueprint developed in ecommerce in the last 10 years is failing in self-care services industry. Businesses would spent money to drive awareness but from Consideration and Purchase would usually happen on 2 different platforms. Which from user experience it looked like the system would just forget what service they were looking at and ask them to start booking from scratch. Of corse it was affecting convesrion and the whole industry operated like this,
+[image]
+
+Note.
+I've been part of 'Vision work' in other companies before and have seen how ambitious open-ended projects like this can get lost, loose trust of tsakeholder or stay as a pretty deck that doesn't lead to any changes. From the beginning a big part of my work was to keep stakeholders engaged. A few things helped. I gave them a rough timeline and what would be the output of each checkpoint, and for every checkpoint I tried to surprise them with something insightful.
+
+
+BTW. This case study only covers part of the project focused on new clients. There was the whole other beast to increase retention of existing clients. 
+
+Outcome:
+- It got a lot of support across the company. I was invited to present at the Board of directors meeting and our founder used it in his pitch to investorstors gor our $80 Million Series D round
+- It got spinned up into many projects that are currently being implemented across the company. e.g. phone based client login and booking flow updates. 
+
+
