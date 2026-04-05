@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Andrey Gargul — Product Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./shared.css" />
+
+  <style>
+    /* ── Page-specific styles (landing) ── */
+
+    /* ═══════════════════════════════════════════════════════════
+       1. INTRO
+    ═══════════════════════════════════════════════════════════ */
+    .intro {
+      position: relative;
+      padding: clamp(40px, 5vw, 64px) 0 clamp(36px, 4vw, 56px);
+      overflow: hidden;
+    }
+
+    /* Faint grid texture */
+    .intro::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 70% 80% at 10% 50%, black 20%, transparent 80%);
+      pointer-events: none;
+    }
+
+    .intro-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .intro-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+    }
+
+    .intro-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .intro-divider {
+      width: 1px;
+      height: 64px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    .intro-text {
+      flex: 1;
+    }
+
+    .intro-name {
+      font-size: clamp(18px, 1.8vw, 22px);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .intro-bio {
+      font-size: var(--body-md);
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      max-width: 560px;
+      margin-bottom: 20px;
+    }
+
+    .intro-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       2. FEATURED CASE STUDIES
+    ═══════════════════════════════════════════════════════════ */
+    .featured {
+      padding: 40px 0 48px;
+      border-top: 1px solid var(--border);
+    }
+
+    .featured-header {
+      margin-bottom: 16px;
+    }
+
+    .featured-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      transition: grid-template-columns 0.4s var(--ease-out);
+    }
+
+    .featured-grid:has(a:first-child:hover) {
+      grid-template-columns: 1.3fr 0.7fr;
+    }
+
+    .featured-grid:has(a:last-child:hover) {
+      grid-template-columns: 0.7fr 1.3fr;
+    }
+
+    /* Override shared.css lift — motion is horizontal here */
+    .featured-grid .next-case-study-card:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Hover overlay — matches the case study pages exactly */
+    .next-case-study-card {
+      isolation: isolate;
+    }
+
+    .next-case-study-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: 0;
+    }
+
+    /* Next-Gen Booking — orange/coral */
+    .featured-grid a[href="./next-gen-booking/"]::before {
+      background: linear-gradient(135deg, #DDE4FF 0%, #C8D5FF 40%, #FFD0BE 100%);
+    }
+
+    /* Voice AI Receptionist — warm gold */
+    .featured-grid a[href="./ai-receptionist/"]::before {
+      background: linear-gradient(135deg, #DDE4FF 0%, #C8D5FF 40%, #F0E4CC 100%);
+    }
+
+    .next-case-study-card:hover::before { opacity: 1; }
+
+    .next-case-study-card .next-cs-top,
+    .next-case-study-card .next-cs-bottom {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Scale down for half-width context */
+    .featured-grid .next-case-study-card {
+      padding: 28px 40px;
+      min-height: 208px;
+    }
+
+    .featured-grid .next-cs-heading {
+      font-size: clamp(18px, 1.8vw, 22px);
+    }
+
+    .featured-grid .next-cs-sub {
+      font-size: var(--body-sm);
+      margin-top: 10px;
+    }
+
+    .featured-grid .next-cs-logo {
+      height: 8px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       3. OTHER PROJECTS
+    ═══════════════════════════════════════════════════════════ */
+    .other-projects {
+      padding: 0 0 64px;
+    }
+
+    .other-projects-header {
+      margin-bottom: 16px;
+    }
+
+    .project-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .project-row {
+      display: grid;
+      gap: 10px;
+    }
+
+    .project-row--3 { grid-template-columns: repeat(3, 1fr); }
+    .project-row--4 { grid-template-columns: repeat(4, 1fr); }
+    .project-row--5 { grid-template-columns: repeat(5, 1fr); }
+
+    .project-card {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      opacity: 0.38;
+      cursor: default;
+      user-select: none;
+      overflow: hidden;
+    }
+
+    .project-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        140px circle at var(--mx, 50%) var(--my, 50%),
+        rgba(180, 210, 255, 0.12) 0%,
+        transparent 100%
+      );
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    .project-card:hover::after {
+      opacity: 1;
+    }
+
+    .project-logo-wrap {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .project-logo-wrap img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Per-logo size corrections */
+    .project-logo-wrap img[alt="BLVD"]     { width: 30px; height: 30px; }
+    .project-logo-wrap img[alt="Heystack"] { width: 15px; height: 15px; }
+    .project-logo-wrap img[alt="Actual"]   { width: 22px; height: 22px; }
+
+    .project-title {
+      font-size: var(--body-sm);
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      margin-bottom: 3px;
+    }
+
+    .project-desc {
+      font-size: var(--body-xs);
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      .featured-grid { grid-template-columns: 1fr; }
+      .project-row--3 { grid-template-columns: repeat(2, 1fr); }
+      .project-row--4 { grid-template-columns: repeat(2, 1fr); }
+      .project-row--5 { grid-template-columns: repeat(3, 1fr); }
+      .intro-divider { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .intro-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .intro-divider { display: none; }
+      .project-row--3,
+      .project-row--4,
+      .project-row--5 { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── INTRO ─────────────────────────────────────────────── -->
+  <div class="intro">
+    <div class="wrap">
+    <div class="intro-inner">
+      <div class="intro-avatar">
+        <img src="./ai-receptionist/media/img/andrey-avatar.png" alt="Andrey Gargul" />
+      </div>
+      <div class="intro-divider"></div>
+      <div class="intro-text">
+        <h1 class="intro-name">Andrey Gargul</h1>
+        <p class="intro-bio">Product designer, 12 years in vertical SaaS. Now doing it with AI in the mix. Always looking for the next interesting problem.</p>
+        <div class="intro-links">
+          <a href="mailto:gargul.andrey@gmail.com" class="cta-btn">Get in touch</a>
+          <a href="https://www.linkedin.com/in/andrey-gargul/" target="_blank" rel="noopener" class="secondary-btn">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <!-- ── CASE STUDIES ──────────────────────────────────────── -->
+  <section class="featured block">
+    <div class="wrap">
+      <div class="featured-header">
+        <span class="label">Case Studies</span>
+      </div>
+      <div class="featured-grid">
+
+        <a href="./next-gen-booking/" class="next-case-study-card">
+          <div class="next-cs-top">
+            <h2 class="next-cs-heading">Next-Gen Booking Vision</h2>
+            <p class="next-cs-sub">Booking vision that made it to a Series D pitch.</p>
+          </div>
+          <div class="next-cs-bottom">
+            <img src="./ai-receptionist/media/img/BLVD | Wordmark Black.png" alt="BLVD" class="next-cs-logo" />
+          </div>
+        </a>
+
+        <a href="./ai-receptionist/" class="next-case-study-card">
+          <div class="next-cs-top">
+            <h2 class="next-cs-heading">Voice AI Receptionist</h2>
+            <p class="next-cs-sub">48% autonomous call handling in a live pilot.</p>
+          </div>
+          <div class="next-cs-bottom">
+            <img src="./ai-receptionist/media/img/BLVD | Wordmark Black.png" alt="BLVD" class="next-cs-logo" />
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MORE WORK ─────────────────────────────────────────── -->
+  <section class="other-projects block">
+    <div class="wrap">
+      <div class="other-projects-header">
+        <span class="label">More Work</span>
+      </div>
+      <div class="project-rows">
+
+        <!-- Row of 4 -->
+        <div class="project-row project-row--4">
+          <div class="project-card">
+            <div>
+              <p class="project-title">Financing</p>
+              <p class="project-desc">Buy now, pay later for high-ticket salon services.</p>
+            </div>
+            <div class="project-logo-wrap"><img src="./img/BLVD | Logomark White.png" alt="BLVD" /></div>
+          </div>
+          <div class="project-card">
+            <div>
+              <p class="project-title">Marketing Suite</p>
+              <p class="project-desc">Fill slow weeks with targeted campaigns and automated messaging.</p>
+            </div>
+            <div class="project-logo-wrap"><img src="./img/BLVD | Logomark White.png" alt="BLVD" /></div>
+          </div>
+          <div class="project-card">
+            <div>
+              <p class="project-title">Mobile App Rehaul</p>
+              <p class="project-desc">Rebuilt the mobile app stylists rely on daily.</p>
+            </div>
+            <div class="project-logo-wrap"><img src="./img/BLVD | Logomark White.png" alt="BLVD" /></div>
+          </div>
+          <div class="project-card">
+            <div>
+              <p class="project-title">Permission Management</p>
+              <p class="project-desc">Role-based access control built for multi-location businesses.</p>
+            </div>
+            <div class="project-logo-wrap"><img src="./img/BLVD | Logomark White.png" alt="BLVD" /></div>
+          </div>
+        </div>
+
+        <!-- Row of 4 -->
+        <div class="project-row project-row--4">
+          <div class="project-card">
+            <div>
+              <p class="project-title">Client Portal</p>
+              <p class="project-desc">Self-service booking and membership management for salon clients.</p>
+            </div>
+            <div class="project-logo-wrap"><img src="./img/BLVD | Logomark White.png" alt="BLVD" /></div>
+          </div>
+          <div class="project-card">
+            <div>
+              <p class="project-title">Design System</p>
+              <p class="project-desc">Shared component library that cut feature build time.</p>
+            </div>
+            <div class="project-logo-wrap"><img src="./img/BLVD | Logomark White.png" alt="BLVD" /></div>
+          </div>
+          <div class="project-card">
+            <div>
+              <p class="project-title">Restaurant Management MVP</p>
+              <p class="project-desc">Order management system shipped with a live pilot.</p>
+            </div>
+            <div class="project-logo-wrap"><img src="./img/order-up.png" alt="OrderUp" /></div>
+          </div>
+          <div class="project-card">
+            <div>
+              <p class="project-title">DevOps Tool</p>
+              <p class="project-desc">Developer tooling for distributed engineering teams.</p>
+            </div>
+            <div class="project-logo-wrap"><img src="./img/heystack.png" alt="Heystack" /></div>
+          </div>
+        </div>
+
+        <!-- Row of 5 -->
+        <div class="project-row project-row--5">
+          <div class="project-card">
+            <div>
+              <p class="project-title">Restaurant Operations MVP</p>
+              <p class="project-desc">One tool for GMs to track restaurant profitability.</p>
+            </div>
+            <div class="project-logo-wrap"><img src="./img/actual.png" alt="Actual" /></div>
+          </div>
+          <div class="project-card">
+            <div>
+              <p class="project-title">App Store</p>
+              <p class="project-desc">Built the biggest vertical SaaS marketplace on the internet.</p>
+            </div>
+            <div class="project-logo-wrap"><img src="./img/shopify_glyph_white.png" alt="Shopify" /></div>
+          </div>
+          <div class="project-card">
+            <div>
+              <p class="project-title">Shop App</p>
+              <p class="project-desc">Turned a deal finder into a shopping destination.</p>
+            </div>
+            <div class="project-logo-wrap"><img src="./img/shopify_glyph_white.png" alt="Shopify" /></div>
+          </div>
+          <div class="project-card">
+            <div>
+              <p class="project-title">Last Mile Delivery</p>
+              <p class="project-desc">Affordable same-day delivery for Shopify merchants.</p>
+            </div>
+            <div class="project-logo-wrap"><img src="./img/shopify_glyph_white.png" alt="Shopify" /></div>
+          </div>
+          <div class="project-card">
+            <div>
+              <p class="project-title">Onboarding</p>
+              <p class="project-desc">First-week setup that kept new merchants from churning.</p>
+            </div>
+            <div class="project-logo-wrap"><img src="./img/shopify_glyph_white.png" alt="Shopify" /></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.querySelectorAll('.project-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+        card.style.setProperty('--my', `${e.clientY - r.top}px`);
+      });
+    });
+
+    const blocks = document.querySelectorAll('.block');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+    );
+    blocks.forEach((block) => observer.observe(block));
+  </script>
+
+</body>
+</html>

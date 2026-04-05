@@ -188,7 +188,7 @@
     .process-video {
       border-radius: 8px;
       overflow: hidden;
-      width: 80%;
+      width: 70%;
     }
 
     .process-video video {
@@ -216,6 +216,32 @@
     }
 
     .process-content p + p { margin-top: 12px; }
+
+    /* ─── Next case study card hover gradient ───────────────── */
+    .next-case-study-card {
+      isolation: isolate;
+    }
+
+    .next-case-study-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #DDE4FF 0%, #C8D5FF 40%, #F5C8D8 100%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: 0;
+    }
+
+    .next-case-study-card:hover::before {
+      opacity: 1;
+    }
+
+    .next-case-study-card .next-cs-top,
+    .next-case-study-card .next-cs-bottom {
+      position: relative;
+      z-index: 1;
+    }
 
     /* ─── Proto card ─────────────────────────────────────────── */
     .proto-hero {
@@ -264,9 +290,53 @@
       animation: sparkle-orbit 2.5s linear infinite;
     }
 
+    .proto-card-video {
+      position: relative;
+    }
+
     .proto-card-video video {
       width: 100%;
       display: block;
+    }
+
+    .proto-card-video-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(2px);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .proto-card:hover .proto-card-video-overlay {
+      opacity: 1;
+    }
+
+    .proto-card-video-overlay-title {
+      font-size: clamp(18px, 2vw, 24px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+
+    .proto-card-video-overlay-sub {
+      font-size: var(--body-sm);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--bg);
+      background: #fff;
+      padding: 8px 20px;
+      border-radius: 6px;
+      transition: opacity 0.2s;
+    }
+
+    .proto-card-video-overlay-sub:hover {
+      opacity: 0.85;
     }
 
     .proto-card-footer {
@@ -448,8 +518,8 @@
         </div>
         <div class="col-card">
           <span class="col-card-label">02</span>
-          <h3>First principles</h3>
-          <p>Strip booking down to core user needs and rebuild from there.</p>
+          <h3>Challenge the playbook</h3>
+          <p>Start from scratch. Ignore what everyone accepted without questioning.</p>
         </div>
         <div class="col-card">
           <span class="col-card-label">03</span>
@@ -458,6 +528,11 @@
         </div>
         <div class="col-card">
           <span class="col-card-label">04</span>
+          <h3>Sell it internally</h3>
+          <p>A vision no one acts on is just a deck. Keep stakeholders close enough that they feel ownership too.</p>
+        </div>
+        <div class="col-card">
+          <span class="col-card-label">05</span>
           <h3>Ship it in pieces</h3>
           <p>Break the vision into self-contained projects and get them onto the roadmap.</p>
         </div>
@@ -513,9 +588,13 @@
   ══════════════════════════════════════ -->
   <section class="proto-hero block">
     <div class="wrap">
-      <a href="#" class="proto-card">
+      <a href="https://blvd-nextgen-app-production.up.railway.app/" target="_blank" rel="noopener noreferrer" class="proto-card">
         <div class="proto-card-video">
-          <video src="media/video/proto-lg.webm" autoplay loop muted playsinline></video>
+          <video src="media/video/proto-lg2.webm" autoplay loop muted playsinline></video>
+          <div class="proto-card-video-overlay">
+            <span class="proto-card-video-overlay-title">Interactive Prototype</span>
+            <span class="proto-card-video-overlay-sub">Try it out</span>
+          </div>
         </div>
         <div class="proto-card-footer">
           <div class="proto-card-left">
@@ -573,22 +652,6 @@
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════
-       CTA CALLOUT
-  ══════════════════════════════════════ -->
-  <div class="cta-callout block">
-    <div class="wrap">
-      <div class="cta-callout-inner">
-        <div class="cta-avatar">
-          <img src="../ai-receptionist/media/img/andrey-avatar.png" alt="Andrey Gargul" />
-        </div>
-        <div class="cta-text">
-          <p><strong>Want more details?</strong> I can walk you through the decisions, the research, and what drove the roadmap changes. Book a call.</p>
-        </div>
-        <a href="#contact" class="cta-btn">Get in touch</a>
-      </div>
-    </div>
-  </div>
 
   <!-- ══════════════════════════════════════
        SCOPE NOTE
@@ -625,6 +688,24 @@
   </section>
 
   <!-- ══════════════════════════════════════
+       NEXT CASE STUDY
+  ══════════════════════════════════════ -->
+  <section class="next-case-study block">
+    <div class="wrap">
+      <p class="next-case-study-label">Next Case Study</p>
+      <a href="../ai-receptionist/" class="next-case-study-card">
+        <div class="next-cs-top">
+          <h2 class="next-cs-heading">Voice AI Receptionist</h2>
+          <p class="next-cs-sub">Small team, tight timeline, extreme ownership. No role boundaries, no egos. Just everyone doing whatever it takes to ship.</p>
+        </div>
+        <div class="next-cs-bottom">
+          <img src="../ai-receptionist/media/img/BLVD | Wordmark Black.png" alt="BLVD" class="next-cs-logo" />
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
        CONTACT
   ══════════════════════════════════════ -->
   <section class="contact block" id="contact">
@@ -634,28 +715,16 @@
           <img src="../ai-receptionist/media/img/andrey-avatar.png" alt="Andrey Gargul" />
         </div>
         <div class="contact-text">
-          <h3>Andrey Gargul</h3>
-          <p>Design lead. I work at the intersection of product, research, and shipping things that actually change. <a href="mailto:andrey@example.com">Say hello.</a></p>
+          <h3>Let's chat</h3>
+          <p>Product designer, 12 years in vertical SaaS. Now doing it with AI in the mix. Always looking for the next interesting problem.</p>
+          <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;">
+            <a href="mailto:gargul.andrey@gmail.com" class="cta-btn">Email me</a>
+            <a href="https://www.linkedin.com/in/andrey-gargul/" class="secondary-btn" target="_blank">Reach out on LinkedIn</a>
+          </div>
         </div>
       </div>
     </div>
   </section>
-
-  <!-- ══════════════════════════════════════
-       NEXT CASE STUDY
-  ══════════════════════════════════════ -->
-  <div class="next-case-study">
-    <p class="next-case-study-label">Next case study</p>
-    <a href="../ai-receptionist/" class="next-case-study-card">
-      <div class="next-cs-top">
-        <p class="next-cs-heading">Voice AI Receptionist</p>
-        <p class="next-cs-sub">Small team, tight timeline, extreme ownership. No role boundaries, no egos. Just everyone doing whatever it takes to ship.</p>
-      </div>
-      <div class="next-cs-bottom">
-        <img src="../ai-receptionist/media/img/BLVD | Wordmark Black.png" alt="BLVD" class="next-cs-logo" />
-      </div>
-    </a>
-  </div>
 
   <script>
     // Intersection observer for scroll-in animations
