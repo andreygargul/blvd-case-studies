@@ -224,12 +224,17 @@
       isolation: isolate;
     }
 
+    /* Default bg: teal (matches Voice AI card on landing) */
+    .next-case-study-card {
+      background: linear-gradient(135deg, #D6EAE6 0%, #8BBFBA 55%, #5E9E9A 100%);
+    }
+
     .next-case-study-card::before {
       content: '';
       position: absolute;
       inset: 0;
       border-radius: 12px;
-      background: linear-gradient(135deg, #DDE4FF 0%, #C8D5FF 40%, #F5C8D8 100%);
+      background: linear-gradient(135deg, #F5D9A8 0%, #EEC070 60%, #E8A84A 100%);
       opacity: 0;
       transition: opacity 0.4s ease;
       z-index: 0;
@@ -445,6 +450,15 @@
       .proto-card-right { flex-direction: column; align-items: flex-start; }
       .customization-grid { grid-template-columns: 1fr; gap: 40px; }
       .aside-note-inner { grid-template-columns: 1fr; gap: 24px; }
+      .meta-grid { grid-template-columns: repeat(2, 1fr); }
+      .meta-item { padding: 20px 0; border-right: none; border-top: 1px solid var(--border); }
+      .meta-item:first-child { border-top: none; }
+      .meta-item:nth-child(2) { border-top: none; }
+    }
+
+    @media (max-width: 480px) {
+      .meta-grid { grid-template-columns: 1fr; }
+      .meta-item:nth-child(2) { border-top: 1px solid var(--border); }
     }
   </style>
 </head>

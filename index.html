@@ -109,17 +109,15 @@
 
     .featured-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 2fr;
       gap: 16px;
       transition: grid-template-columns 0.4s var(--ease-out);
     }
 
-    .featured-grid:has(a:first-child:hover) {
-      grid-template-columns: 1.3fr 0.7fr;
-    }
-
-    .featured-grid:has(a:last-child:hover) {
-      grid-template-columns: 0.7fr 1.3fr;
+    @media (min-width: 769px) {
+      .featured-grid:has(a:first-child:hover) {
+        grid-template-columns: 2fr 1fr;
+      }
     }
 
     /* Override shared.css lift — motion is horizontal here */
@@ -145,15 +143,33 @@
 
     /* Next-Gen Booking — orange/coral */
     .featured-grid a[href="./next-gen-booking/"]::before {
-      background: linear-gradient(135deg, #DDE4FF 0%, #C8D5FF 40%, #FFD0BE 100%);
+      background: linear-gradient(135deg, #FF4422 0%, #FF6622 55%, #FFAA22 100%);
     }
 
-    /* Voice AI Receptionist — warm gold */
+    /* Voice AI Receptionist — teal (default bg) */
+    .featured-grid a[href="./ai-receptionist/"] {
+      background: linear-gradient(135deg, #D6EAE6 0%, #8BBFBA 55%, #5E9E9A 100%);
+    }
+
     .featured-grid a[href="./ai-receptionist/"]::before {
-      background: linear-gradient(135deg, #DDE4FF 0%, #C8D5FF 40%, #F0E4CC 100%);
+      background: linear-gradient(135deg, #F5D9A8 0%, #EEC070 60%, #E8A84A 100%);
     }
 
     .next-case-study-card:hover::before { opacity: 1; }
+
+    /* Logomark watermark — right side, cropped */
+    .next-case-study-card::after {
+      content: '';
+      position: absolute;
+      right: -80px;
+      bottom: -120px;
+      width: 360px;
+      height: 360px;
+      background: url('./img/BLVD | Logomark White.png') center / contain no-repeat;
+      opacity: 0.15;
+      z-index: 0;
+      pointer-events: none;
+    }
 
     .next-case-study-card .next-cs-top,
     .next-case-study-card .next-cs-bottom {
