@@ -277,6 +277,43 @@
     /* ═══════════════════════════════════════════════════════════
        RESPONSIVE
     ═══════════════════════════════════════════════════════════ */
+    /* ═══════════════════════════════════════════════════════════
+       4. PERSONAL PAGE PEEK
+    ═══════════════════════════════════════════════════════════ */
+    .personal-peek {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      padding: 24px 0 56px;
+      text-decoration: none;
+    }
+
+    .personal-peek img {
+      display: block;
+      height: 9px;
+      width: auto;
+      image-rendering: pixelated;
+      opacity: 0.75;
+      transition: opacity 0.2s;
+    }
+
+    .personal-peek:hover img {
+      opacity: 1;
+    }
+
+    @keyframes terminal-blink {
+      0%, 49% { opacity: 0.75; }
+      50%, 100% { opacity: 0; }
+    }
+
+    .peek-arrow {
+      animation: terminal-blink 1s step-end infinite;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════════════════ */
     @media (max-width: 768px) {
       .featured-grid { grid-template-columns: 1fr; }
       .project-row--3 { grid-template-columns: repeat(2, 1fr); }
@@ -352,7 +389,7 @@
   <section class="other-projects block">
     <div class="wrap">
       <div class="other-projects-header">
-        <span class="label">More Work</span>
+        <span class="label">Also Shipped</span>
       </div>
       <div class="project-rows">
 
@@ -462,6 +499,12 @@
       </div>
     </div>
   </section>
+
+  <!-- ── PERSONAL PAGE PEEK ────────────────────────────────── -->
+  <a href="https://andrey.gg" target="_blank" rel="noopener" class="personal-peek">
+    <img src="./img/andreygg-back.png" alt="<" class="peek-arrow" />
+    <img src="./img/andreygg.png" alt="Back to andrey.gg" />
+  </a>
 
   <script>
     document.querySelectorAll('.project-card').forEach(card => {
