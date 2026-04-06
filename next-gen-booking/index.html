@@ -219,6 +219,76 @@
 
     .process-content p + p { margin-top: 12px; }
 
+    /* ─── Journey rebuild ───────────────────────────────────── */
+    .journey {
+      padding: 80px 0;
+    }
+
+    .journey-header {
+      margin-bottom: 56px;
+    }
+
+    .journey-header h2 {
+      font-size: var(--title-md);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--text-primary);
+      margin-top: 16px;
+    }
+
+    .journey-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 48px;
+      padding-top: 0;
+    }
+
+    .journey-step {
+      padding: 0;
+    }
+
+    .journey-step-video {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+    }
+
+    .journey-step-video video {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+    }
+
+    .journey-step-label {
+      display: block;
+      font-size: var(--body-xs);
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 16px;
+    }
+
+    .journey-step p {
+      font-size: var(--body-sm);
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    @media (max-width: 640px) {
+      .journey-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+
     /* ─── Next case study card hover gradient ───────────────── */
     .next-case-study-card {
       isolation: isolate;
@@ -445,7 +515,7 @@
       .problem-grid { grid-template-columns: 1fr; gap: 32px; }
       .process-header { grid-template-columns: 1fr; gap: 24px; }
       .process-item { grid-template-columns: 1fr; gap: 24px; }
-      .process-video { display: none; }
+      .process-video { order: -1; margin: 0 auto; }
       .proto-card-footer { grid-template-columns: 1fr; gap: 24px; }
       .proto-card-right { flex-direction: column; align-items: flex-start; }
       .customization-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -628,6 +698,47 @@
           </div>
         </div>
       </a>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       JOURNEY REBUILD
+  ══════════════════════════════════════ -->
+  <section class="journey block">
+    <div class="wrap">
+      <div class="journey-header">
+        <span class="label">The rebuild</span>
+        <h2>The booking journey, redesigned</h2>
+        <p style="margin-top:16px;font-size:var(--body-lg);font-weight:300;color:var(--text-secondary);line-height:1.7;max-width:560px;">The website and the booking tool were two separate worlds. We connected them.</p>
+      </div>
+      <div class="journey-grid">
+
+        <div class="journey-step">
+          <div class="journey-step-video"><video src="media/video/feature1.webm" autoplay loop muted playsinline></video></div>
+          <span class="journey-step-label">Discovery</span>
+          <p>Businesses spend real money on ads, then hand the client to a booking tool with no memory of what brought them there. E-commerce fixed this a decade ago. For services, the website and the booking system were still two separate things.</p>
+        </div>
+
+        <div class="journey-step">
+          <div class="journey-step-video"><video src="media/video/feature2.webm" autoplay loop muted playsinline></video></div>
+          <span class="journey-step-label">Awareness</span>
+          <p>Designed as a landing page, not a list of services. The discount from the ad carries through. Reviews are visible before the client commits. Add-ons and memberships surface here, not buried later. One job: get people to book.</p>
+        </div>
+
+        <div class="journey-step">
+          <div class="journey-step-video"><video src="media/video/feature3.webm" autoplay loop muted playsinline></video></div>
+          <span class="journey-step-label">Appointment</span>
+          <p>The biggest drop-off in the old flow was here. Provider and date were separate screens: pick a stylist, check availability, hit a wall, go back. We collapsed it into one view. Preferred provider booked? Switch in one tap.</p>
+        </div>
+
+        <div class="journey-step">
+          <div class="journey-step-video"><video src="media/video/feature4.webm" autoplay loop muted playsinline></video></div>
+          <span class="journey-step-label">No Friction</span>
+          <p>Nobody remembers their hair salon password. Forgotten passwords mean duplicate accounts, support tickets, and drop-off. Phone number plus verification code. Done.</p>
+        </div>
+
+
+      </div>
     </div>
   </section>
 
