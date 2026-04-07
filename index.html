@@ -8,6 +8,22 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="img/fav.png" />
+  <script>
+    (function () {
+      function stop(e) { e.preventDefault(); }
+      function stopKeys(e) {
+        if ([32,33,34,35,36,37,38,39,40].indexOf(e.keyCode) > -1) e.preventDefault();
+      }
+      window.addEventListener('wheel',     stop,     { passive: false });
+      window.addEventListener('touchmove', stop,     { passive: false });
+      window.addEventListener('keydown',   stopKeys, { passive: false });
+      window.__unlockScroll = function () {
+        window.removeEventListener('wheel',     stop);
+        window.removeEventListener('touchmove', stop);
+        window.removeEventListener('keydown',   stopKeys);
+      };
+    })();
+  </script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -59,15 +75,14 @@
       display: flex;
       justify-content: space-between;
       position: relative;
-      width: 100vw;
-      left: 50%;
-      transform: translateX(-50%);
     }
 
     .about-links {
       display: flex;
       flex-direction: column;
       gap: 8px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
       align-items: flex-end;
     }
 
@@ -107,11 +122,14 @@
     .about-bio.lead {
       font-weight: 600;
       color: var(--fg);
+      opacity: 0;
     }
 
     .about-bio.supporting {
       font-weight: 300;
       color: rgba(255,255,255,0.8);
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
 
@@ -160,6 +178,8 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
       padding-top: 16px; /* align with first row text */
     }
 
@@ -233,6 +253,8 @@
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+      opacity: 0;
+      transition: opacity 0.3s ease;
       align-items: center;
       gap: 24px;
       padding: 16px 0;
@@ -829,10 +851,7 @@
       const smileyMap = drawSmiley();
 
       currentMap = blvdMap;
-      setTimeout(() => {
-        buildIn(blvdMap);
-        startAmbientBlink();
-      }, 1000);
+      // buildIn is triggered externally after scramble finishes
 
       // Scroll-driven morph: 3 states
       const blvdPanel    = document.querySelector('.panel-blvd');
@@ -876,6 +895,8 @@
           }
         }, 250);
       }, { passive: true });
+
+      return { blvdMap, smileyMap };
     }
 
     // Viewport-aware peek positioning
@@ -898,6 +919,7 @@
       return new Promise(resolve => {
         const original = el.textContent;
         el.textContent = '';
+        el.style.opacity = '1';
         setTimeout(() => {
           let frame = 0;
           const totalFrames = original.length * 3;
@@ -931,32 +953,58 @@
       }, 30);
     }
 
-    // Hide everything non-scrambling from the start
-    document.querySelectorAll('.about-bio.supporting, .about-links, .project-row, .section-header').forEach(el => {
-      el.style.opacity = '0';
-      el.style.transition = 'opacity 0.3s ease';
-    });
-
     // Scramble headings, then unlock all other fades
     const leads = Array.from(document.querySelectorAll('.about-bio.lead'));
-    Promise.all(leads.map((el) => scramble(el, 0))).then(() => {
-      // Bio supporting text + links fade in
-      document.querySelectorAll('.about-bio.supporting, .about-links').forEach(el => {
-        el.style.opacity = '1';
-      });
+    console.log('[init] leads found:', leads.length, '| t=0');
+    const t0 = performance.now();
+    // Safety fallback: always unlock scroll after 3s regardless of animation state
+    setTimeout(() => {
+      console.log('[safety] unlock at', Math.round(performance.now() - t0), 'ms');
+      if (window.__unlockScroll) window.__unlockScroll();
+    }, 10000);
 
-      // Start scroll observer for project rows + section headers
-      const rowObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (!entry.isIntersecting) return;
-          rowObserver.unobserve(entry.target);
-          entry.target.style.opacity = '1';
+    const mapsPromise = run();
+
+    Promise.all([
+      Promise.all(leads.map((el) => scramble(el, 0))),
+      mapsPromise
+    ]).then(([_, maps]) => {
+      console.log('[scramble+maps] done at', Math.round(performance.now() - t0), 'ms');
+
+      // ~2430ms: grid build-in starts
+      buildIn(maps.blvdMap);
+      startAmbientBlink();
+
+      const allRows = Array.from(document.querySelectorAll('.project-row'));
+
+      // ~3630ms: supporting text, links, section headers, first rows fade in
+      setTimeout(() => {
+        document.querySelectorAll('.about-bio.supporting, .about-links').forEach(el => {
+          el.style.opacity = '1';
         });
-      }, { threshold: 0.3 });
-      document.querySelectorAll('.project-row, .section-header').forEach(el => rowObserver.observe(el));
-    });
+        document.querySelectorAll('.section-header').forEach(el => {
+          el.style.opacity = '1';
+        });
+        allRows.slice(0, 3).forEach((el, i) => {
+          setTimeout(() => { el.style.opacity = '1'; }, i * 80);
+        });
+      }, 1200);
 
-    run();
+      // ~5000ms: scroll unlocks, remaining rows handed to scroll observer
+      setTimeout(() => {
+        console.log('[unlock] scroll unlocked at', Math.round(performance.now() - t0), 'ms');
+        if (window.__unlockScroll) window.__unlockScroll();
+
+        const rowObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            rowObserver.unobserve(entry.target);
+            entry.target.style.opacity = '1';
+          });
+        }, { threshold: 0.3 });
+        allRows.slice(3).forEach(el => rowObserver.observe(el));
+      }, 2570);
+    });
   </script>
 </body>
 </html>
