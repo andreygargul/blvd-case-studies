@@ -830,8 +830,10 @@
       const smileyMap = drawSmiley();
 
       currentMap = blvdMap;
-      buildIn(blvdMap);
-      startAmbientBlink();
+      setTimeout(() => {
+        buildIn(blvdMap);
+        startAmbientBlink();
+      }, 1000);
 
       // Scroll-driven morph: 3 states
       const blvdPanel    = document.querySelector('.panel-blvd');
@@ -888,6 +890,71 @@
           row.classList.remove('peek-below');
         }
       });
+    });
+
+    // ── Scramble: runs immediately, parallel to grid build-in ──
+    const chars = '█▓▒░■□▪●○◆◇▲△▼▽◉◎+×÷†‡╋┼╬▐▌▄▀◘ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    function scramble(el, delay) {
+      return new Promise(resolve => {
+        const original = el.textContent;
+        el.textContent = '';
+        setTimeout(() => {
+          let frame = 0;
+          const totalFrames = original.length * 3;
+          const interval = setInterval(() => {
+            el.textContent = original.split('').map((char, j) => {
+              if (char === ' ') return ' ';
+              if (frame >= j * 3) return original[j];
+              return chars[Math.floor(Math.random() * chars.length)];
+            }).join('');
+            frame++;
+            if (frame > totalFrames) { clearInterval(interval); resolve(); }
+          }, 30);
+        }, delay);
+      });
+    }
+
+    function scrambleTextNode(el) {
+      const textNode = el.childNodes[0];
+      const original = textNode.textContent;
+      textNode.textContent = '';
+      let frame = 0;
+      const totalFrames = original.length * 3;
+      const interval = setInterval(() => {
+        textNode.textContent = original.split('').map((char, j) => {
+          if (char === ' ') return ' ';
+          if (frame >= j * 3) return original[j];
+          return chars[Math.floor(Math.random() * chars.length)];
+        }).join('');
+        frame++;
+        if (frame > totalFrames) clearInterval(interval);
+      }, 30);
+    }
+
+    // Hide everything non-scrambling from the start
+    document.querySelectorAll('.about-bio.supporting, .about-links, .project-row, .section-header').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transition = 'opacity 0.3s ease';
+    });
+
+    // Scramble headings, then unlock all other fades
+    const leads = Array.from(document.querySelectorAll('.about-bio.lead'));
+    Promise.all(leads.map((el) => scramble(el, 0))).then(() => {
+      // Bio supporting text + links fade in
+      document.querySelectorAll('.about-bio.supporting, .about-links').forEach(el => {
+        el.style.opacity = '1';
+      });
+
+      // Start scroll observer for project rows + section headers
+      const rowObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          rowObserver.unobserve(entry.target);
+          entry.target.style.opacity = '1';
+        });
+      }, { threshold: 0.3 });
+      document.querySelectorAll('.project-row, .section-header').forEach(el => rowObserver.observe(el));
     });
 
     run();
