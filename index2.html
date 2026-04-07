@@ -6,7 +6,7 @@
   <title>Andrey Gargul — Product Designer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500&family=Pixelify+Sans:wght@400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="img/fav.png" />
   <script src="password.js"></script>
 
@@ -20,7 +20,7 @@
       --dim: rgba(255,255,255,0.08);
       --accent: #ff6b4a;
       --border: rgba(255,255,255,0.1);
-      --mono: 'Geist Mono', 'Courier New', monospace;
+      --mono: 'Geist', sans-serif;
     }
 
     html { scroll-behavior: smooth; }
@@ -32,75 +32,149 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ── Layout ── */
-    .split {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-areas:
-        "about   grid"
-        "blvd    grid"
-        "shopify grid";
-      align-items: start;
+    /* ── Fixed grid background ── */
+    .grid-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-bottom: 60px; /* offset for header text height */
+      z-index: 0;
+      pointer-events: none;
     }
 
-    .panel-about   { grid-area: about;   border-right: 1px solid var(--border); }
-    .panel-blvd    { grid-area: blvd;    border-right: 1px solid var(--border); }
-    .panel-shopify { grid-area: shopify; border-right: 1px solid var(--border); }
+    /* ── Scrolling content ── */
+    .split {
+      position: relative;
+      z-index: 1;
+    }
 
-    .about-hero {
-      min-height: 100svh;
+    /* Hero: full-height spacer, bio at top-left */
+    .panel-about {
+      min-height: 80svh;
+      padding: 40px 48px;
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      width: 100vw;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .about-links {
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      padding: 48px 48px 64px;
-      border-bottom: 1px solid var(--border);
+      gap: 8px;
+      align-items: flex-end;
     }
 
-    .eyebrow {
+    .about-link {
+      font-family: var(--mono);
       font-size: 11px;
       font-weight: 400;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 24px;
+      color: var(--muted);
+      text-decoration: none;
     }
 
-    .about-name {
-      font-family: 'Pixelify Sans', var(--mono);
-      font-size: 48px;
-      font-weight: 400;
-      line-height: 1.05;
-      letter-spacing: -0.01em;
-      color: var(--fg);
-      margin-bottom: 32px;
+    .about-link:hover { color: var(--fg); }
+
+    .about-bio-cols {
+      display: flex;
+      flex-direction: row;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .about-bio-col {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
     .about-bio {
-      font-family: 'Pixelify Sans', var(--mono);
-      font-size: 20px;
+      font-family: var(--mono);
+      font-size: 13px;
       font-weight: 400;
-      line-height: 1.55;
-      color: var(--muted);
-      max-width: 480px;
+      line-height: 1.5;
+      color: var(--fg);
+    }
+
+    .about-bio.lead {
+      font-weight: 600;
+      color: var(--fg);
+    }
+
+    .about-bio.supporting {
+      font-weight: 300;
+      color: rgba(255,255,255,0.8);
+    }
+
+
+    /* Project panels: solid bg so they're readable over the grid */
+    .panel-blvd,
+    .panel-shopify {
+      background: var(--bg);
+      position: relative;
+      padding: 24px 48px;
+    }
+
+    /* Pixelated dissolve edge at top of each panel */
+    .panel-blvd::before,
+    .panel-shopify::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: var(--dissolve-mask, none);
+      background-size: 100% 100%;
+      pointer-events: none;
+    }
+
+    /* Pixelated dissolve edge at bottom of each panel */
+    .panel-blvd::after,
+    .panel-shopify::after {
+      content: '';
+      position: absolute;
+      bottom: -80px;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: var(--dissolve-mask-flip, none);
+      background-size: 100% 100%;
+      pointer-events: none;
     }
 
     /* ── Project sections ── */
     .project-section {
-      padding: 56px 48px;
-      border-bottom: 1px solid var(--border);
+      padding: 0;
     }
 
     .section-header {
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 40px;
+      padding-top: 16px; /* align with first row text */
     }
 
     .section-header img {
-      height: 14px;
+      height: 28px;
       width: auto;
-      opacity: 0.5;
+      filter: brightness(0) saturate(100%) invert(52%) sepia(79%) saturate(1002%) hue-rotate(328deg) brightness(97%);
+    }
+
+    /* Two-col layout: header left, list right */
+    .project-section {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      align-items: start;
     }
 
     .section-label {
@@ -108,76 +182,157 @@
       font-weight: 500;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--muted);
+      color: var(--accent);
     }
 
-    .project-list { display: flex; flex-direction: column; }
+    .project-list { display: flex; flex-direction: column; border-bottom: 1px solid rgba(255,255,255,0.12); overflow: visible; }
+
+    /* ── Polaroid peek ── */
+    a.project-row {
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+    }
+
+    .peek {
+      position: absolute;
+      left: 20%;
+      bottom: calc(100% + 8px);
+      top: auto;
+      width: 400px;
+      transform: translateY(12px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+      z-index: 100;
+    }
+
+    a.project-row.peek-below .peek {
+      bottom: auto;
+      top: calc(100% + 8px);
+      transform: translateY(-12px);
+    }
+
+    .peek img,
+    .peek video {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      display: block;
+    }
+
+    a.project-row:hover .peek {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (hover: none) {
+      .peek { display: none; }
+    }
 
     .project-row {
       display: flex;
+      flex-direction: row;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: center;
       gap: 24px;
       padding: 16px 0;
-      border-top: 1px solid var(--border);
+      border-top: 1px solid rgba(255,255,255,0.12);
     }
 
-    .project-row:last-child { border-bottom: 1px solid var(--border); }
+
+    .project-row-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .project-view {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+
+    a.project-row:hover .project-view {
+      color: var(--fg);
+    }
+
+    .project-year {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .project-company {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
 
     .project-name {
-      font-size: 14px;
-      font-weight: 400;
+      font-size: 13px;
+      font-weight: 600;
       color: var(--fg);
-      letter-spacing: 0.01em;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .chip {
+      font-size: 7px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 2px;
+      padding: 1px 4px;
+      white-space: nowrap;
+      opacity: 0.85;
     }
 
     .project-desc {
       font-size: 12px;
       font-weight: 300;
       color: var(--muted);
-      text-align: right;
-      max-width: 260px;
+      text-align: left;
       line-height: 1.5;
+      white-space: nowrap;
     }
 
-    .panel-left-end { min-height: 40svh; }
-
-    /* ── Right panel: sticky ── */
-    .panel-right {
-      grid-area: grid;
-      position: sticky;
-      top: 0;
-      height: 100svh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
 
     /* ── Character grid ── */
     #pixel-grid {
       display: grid;
-      grid-template-columns: repeat(64, 9px);
-      grid-template-rows: repeat(64, 9px);
-      gap: 0;
-      font-family: var(--mono);
-      font-size: 9px;
-      line-height: 9px;
-      flex-shrink: 0;
+      grid-template-columns: repeat(64, 1fr);
+      width: min(56vw, 56vh);
+      aspect-ratio: 1 / 1;
+      font-family: 'Courier New', monospace;
     }
 
     .cell {
-      width: 9px;
-      height: 9px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 9px;
+      font-size: calc(min(56vw, 56vh) / 64);
       line-height: 1;
       color: rgba(255,255,255,0.07);
       will-change: transform, opacity;
       user-select: none;
+      overflow: hidden;
     }
 
     .cell::before { content: '·'; }
@@ -186,61 +341,75 @@
 
     .cell.on { color: var(--fg); }
 
+    .section-gap { min-height: 100svh; }
+
     /* ── Responsive ── */
-    @media (max-width: 960px) {
-      .split {
-        grid-template-columns: 1fr;
-      }
+    @media (max-width: 700px) {
+      /* Padding — consistent 24px horizontal gutter */
+      .panel-about { padding: 28px 24px; min-height: 78svh; flex-direction: column; align-items: flex-start; justify-content: flex-start; width: 100%; left: auto; transform: none; }
+      .panel-blvd,
+      .panel-shopify { padding: 24px 24px; }
 
-      .split {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-          "about"
-          "blvd"
-          "grid"
-          "shopify";
-      }
+      /* Bio: constrain line length, stack cols, differentiate sizes */
+      .about-bio-cols { flex-direction: column; gap: 20px; margin-bottom: 20px; }
 
-      .panel-about   { border-right: none; }
-      .panel-blvd    { border-right: none; }
-      .panel-shopify { border-right: none; }
+      /* Links: row, tighter, slightly brighter */
+      .about-links { flex-direction: row; gap: 20px; margin-top: 0; }
+      .about-link { color: rgba(255,255,255,0.55); }
 
-      .panel-right {
-        grid-area: grid;
-        position: sticky;
-        top: 0;
-        height: 50vw;
-        min-height: 300px;
-        border-bottom: 1px solid var(--border);
-        z-index: 10;
-        background: var(--bg);
-      }
+      /* Project section: single column */
+      .project-section { grid-template-columns: 1fr; gap: 16px; }
+      .section-header { padding-top: 0; }
 
-      #pixel-grid {
-        transform: scale(0.52);
-        transform-origin: center;
-      }
+      /* Allow text to wrap */
+      .project-name { white-space: normal; }
+      .project-desc { white-space: normal; }
+
+      /* Year aligned to top of row */
+      .project-row { gap: 12px; align-items: flex-start; }
+      .project-year { font-size: 11px; padding-top: 2px; }
+
+      /* Gap between sections */
+      .section-gap { min-height: 50svh; }
+
+      /* Center the animation grid */
+      .grid-bg { justify-content: center; padding-bottom: 20px; padding-top: 20px; }
+      #pixel-grid { width: min(69vw, 69vw); }
+      .cell { font-size: calc(69vw / 64); }
     }
 
-    @media (max-width: 540px) {
-      #pixel-grid { transform: scale(0.37); }
-      .about-hero { padding: 32px 24px 48px; }
-      .project-section { padding: 40px 24px; }
-      .about-name { font-size: 36px; }
-      .about-bio { font-size: 17px; }
+    @media (max-width: 400px) {
+      .panel-about,
+      .panel-blvd,
+      .panel-shopify { padding-left: 18px; padding-right: 18px; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Fixed animation background -->
+  <div class="grid-bg">
+    <div id="pixel-grid"></div>
+  </div>
+
+  <!-- Scrolling content -->
   <div class="split">
 
-    <!-- ABOUT -->
+    <!-- HERO: bio over the fixed grid -->
     <div class="panel-about">
-      <div class="about-hero">
-        <div class="eyebrow">— Product Designer</div>
-        <h1 class="about-name">Andrey<br>Gargul</h1>
-        <p class="about-bio">Product design leader with over 12 years of experience in B2B software and vertical SaaS. Head of Design at Boulevard, Staff Designer and Design Manager at Shopify.</p>
+      <div class="about-bio-cols">
+        <div class="about-bio-col">
+          <p class="about-bio lead">Andrey Gargul</p>
+          <p class="about-bio supporting">12+ years designing B2B software.</p>
+        </div>
+        <div class="about-bio-col">
+          <p class="about-bio lead">Head of Design at Boulevard</p>
+          <p class="about-bio supporting">Previously Staff Designer and Manager at Shopify.</p>
+        </div>
+      </div>
+      <div class="about-links">
+        <a href="mailto:gargul.andrey@gmail.com" class="about-link">Email</a>
+        <a href="https://linkedin.com/in/andreygargul" class="about-link">LinkedIn</a>
       </div>
     </div>
 
@@ -252,42 +421,80 @@
           <span class="section-label">Boulevard</span>
         </div>
         <div class="project-list">
+          <a href="ai-receptionist/index.html" class="project-row">
+            <div class="project-row-left">
+              <span class="project-name">Voice AI Receptionist <span class="chip">Case Study</span></span>
+              <span class="project-desc">Replace the revolving-door front desk with AI that handles real calls reliably.</span>
+            </div>
+            <div class="project-view">
+              <span>View →</span>
+              <span class="project-year">2025</span>
+            </div>
+            <div class="peek">
+              <video src="ai-receptionist/media/video/thumb.webm" autoplay muted loop playsinline></video>
+            </div>
+          </a>
+          <a href="next-gen-booking/index.html" class="project-row">
+            <div class="project-row-left">
+              <span class="project-name">Next-Gen Booking Vision <span class="chip">Case Study</span></span>
+              <span class="project-desc">Rebuild the booking journey for a customer base that had outgrown it.</span>
+            </div>
+            <div class="project-view">
+              <span>View →</span>
+              <span class="project-year">2025</span>
+            </div>
+            <div class="peek">
+              <video src="next-gen-booking/media/video/feature2.webm" autoplay muted loop playsinline></video>
+            </div>
+          </a>
           <div class="project-row">
-            <span class="project-name">Next-Gen Booking Vision</span>
-            <span class="project-desc">Booking vision that made it to a Series D pitch.</span>
+            <div class="project-row-left">
+              <span class="project-name">Permission Management</span>
+              <span class="project-desc">Role-based access for multi-location businesses.</span>
+            </div>
+            <span class="project-year">2025</span>
           </div>
           <div class="project-row">
-            <span class="project-name">Voice AI Receptionist</span>
-            <span class="project-desc">48% autonomous call handling in a live pilot.</span>
+            <div class="project-row-left">
+              <span class="project-name">Mobile App Rehaul</span>
+              <span class="project-desc">Rebuilt the mobile app stylists rely on daily.</span>
+            </div>
+            <span class="project-year">2024</span>
           </div>
           <div class="project-row">
-            <span class="project-name">Financing</span>
-            <span class="project-desc">Buy now, pay later for high-ticket salon services.</span>
+            <div class="project-row-left">
+              <span class="project-name">Financing</span>
+              <span class="project-desc">Buy now, pay later for high-ticket salon services.</span>
+            </div>
+            <span class="project-year">2024</span>
           </div>
           <div class="project-row">
-            <span class="project-name">Marketing Suite</span>
-            <span class="project-desc">Fill slow weeks with targeted campaigns.</span>
+            <div class="project-row-left">
+              <span class="project-name">Marketing Suite</span>
+              <span class="project-desc">Fill slow weeks with targeted campaigns.</span>
+            </div>
+            <span class="project-year">2024</span>
           </div>
           <div class="project-row">
-            <span class="project-name">Mobile App Rehaul</span>
-            <span class="project-desc">Rebuilt the mobile app stylists rely on daily.</span>
+            <div class="project-row-left">
+              <span class="project-name">Client Portal</span>
+              <span class="project-desc">Self-service booking and membership management.</span>
+            </div>
+            <span class="project-year">2023</span>
           </div>
           <div class="project-row">
-            <span class="project-name">Permission Management</span>
-            <span class="project-desc">Role-based access for multi-location businesses.</span>
-          </div>
-          <div class="project-row">
-            <span class="project-name">Client Portal</span>
-            <span class="project-desc">Self-service booking and membership management.</span>
-          </div>
-          <div class="project-row">
-            <span class="project-name">Design System</span>
-            <span class="project-desc">Shared component library that cut build time.</span>
+            <div class="project-row-left">
+              <span class="project-name">Design System</span>
+              <span class="project-desc">Shared component library that cut build time.</span>
+            </div>
+            <span class="project-year">2023</span>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- Gap: shows fixed animation behind -->
+    <div class="section-gap"></div>
 
     <!-- SHOPIFY PROJECTS -->
     <div class="panel-shopify">
@@ -298,29 +505,87 @@
         </div>
         <div class="project-list">
           <div class="project-row">
-            <span class="project-name">App Store</span>
-            <span class="project-desc">Biggest vertical SaaS marketplace on the internet.</span>
+            <div class="project-row-left">
+              <span class="project-name">Last Mile Delivery</span>
+              <span class="project-desc">Affordable same-day delivery for merchants.</span>
+            </div>
+            <span class="project-year">2021</span>
           </div>
           <div class="project-row">
-            <span class="project-name">Shop App</span>
-            <span class="project-desc">Turned a deal finder into a shopping destination.</span>
+            <div class="project-row-left">
+              <span class="project-name">Shop App</span>
+              <span class="project-desc">Turned order tracking app into a marketplace.</span>
+            </div>
+            <span class="project-year">2020</span>
           </div>
           <div class="project-row">
-            <span class="project-name">Last Mile Delivery</span>
-            <span class="project-desc">Affordable same-day delivery for merchants.</span>
+            <div class="project-row-left">
+              <span class="project-name">Partners Platform</span>
+              <span class="project-desc">From Partners dashboard redesign to Experts marketplace.</span>
+            </div>
+            <span class="project-year">2018–2019</span>
           </div>
           <div class="project-row">
-            <span class="project-name">Onboarding</span>
-            <span class="project-desc">First-week setup that kept new merchants from churning.</span>
+            <div class="project-row-left">
+              <span class="project-name">App Store</span>
+              <span class="project-desc">Redesigned for scale. From 400 apps to 2000.</span>
+            </div>
+            <span class="project-year">2016–2017</span>
+          </div>
+          <div class="project-row">
+            <div class="project-row-left">
+              <span class="project-name">Facebook &amp; Pinterest Sales Channels</span>
+              <span class="project-desc">Integration with biggest social media channels.</span>
+            </div>
+            <span class="project-year">2015</span>
+          </div>
+          <div class="project-row">
+            <div class="project-row-left">
+              <span class="project-name">Onboarding</span>
+              <span class="project-desc">First-week setup that kept new merchants from churning.</span>
+            </div>
+            <span class="project-year">2014</span>
           </div>
         </div>
       </div>
-      <div class="panel-left-end"></div>
     </div>
 
-    <!-- RIGHT: sticky character grid -->
-    <div class="panel-right">
-      <div id="pixel-grid"></div>
+    <!-- Gap: reveals smiley face -->
+    <div class="section-gap"></div>
+
+    <!-- OTHER PROJECTS -->
+    <div class="panel-shopify">
+      <div class="project-section" id="section-other">
+        <div class="section-header">
+          <span class="section-label">Startups</span>
+        </div>
+        <div class="project-list">
+          <div class="project-row">
+            <div class="project-row-left">
+              <span class="project-name">Restaurant Management Platform</span>
+              <span class="project-company">Order Up</span>
+              <span class="project-desc">MVP for order management system shipped with a live pilot.</span>
+            </div>
+            <span class="project-year">2022</span>
+          </div>
+          <div class="project-row">
+            <div class="project-row-left">
+              <span class="project-name">Restaurant Operations MVP</span>
+              <span class="project-company">Actual</span>
+              <span class="project-desc">One tool for GMs to track restaurant profitability.</span>
+            </div>
+            <span class="project-year">2022</span>
+          </div>
+          <div class="project-row">
+            <div class="project-row-left">
+              <span class="project-name">DevOps Tool</span>
+              <span class="project-company">Haystack</span>
+              <span class="project-desc">Developer tooling for distributed engineering teams.</span>
+            </div>
+            <span class="project-year">2022</span>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -343,6 +608,41 @@
       gridEl.appendChild(el);
       return el;
     });
+
+    // Generate pixelated dissolve mask and apply to panels
+    (function generateDissolveMask() {
+      const W = 512, H = 80, B = 12; // canvas size, block size
+      const cvs = document.createElement('canvas');
+      cvs.width = W; cvs.height = H;
+      const c = cvs.getContext('2d');
+
+      for (let y = 0; y < H; y += B) {
+        for (let x = 0; x < W; x += B) {
+          const progress = y / H; // 0 = top (sparse), 1 = bottom (dense)
+          const threshold = progress * progress; // ease in
+          if (Math.random() < threshold) {
+            c.fillStyle = '#000';
+            c.fillRect(x, y, B, B);
+          }
+        }
+      }
+
+      const url = cvs.toDataURL('image/png');
+      document.documentElement.style.setProperty('--dissolve-mask', `url(${url})`);
+
+      // Flipped version for bottom edge (dense at top → sparse at bottom)
+      const cvs2 = document.createElement('canvas');
+      cvs2.width = W; cvs2.height = H;
+      const c2 = cvs2.getContext('2d');
+      c2.drawImage(cvs, 0, 0);
+      const flipped = document.createElement('canvas');
+      flipped.width = W; flipped.height = H;
+      const fc = flipped.getContext('2d');
+      fc.translate(0, H);
+      fc.scale(1, -1);
+      fc.drawImage(cvs2, 0, 0);
+      document.documentElement.style.setProperty('--dissolve-mask-flip', `url(${flipped.toDataURL('image/png')})`);
+    })();
 
     // Normalize and sample a PNG into a 64×64 binary map
     function sampleImage(src, padding = 4) {
@@ -485,30 +785,110 @@
       }
     }
 
+    // Draw outline smiley face directly on canvas → pixel map
+    function drawSmiley() {
+      const cvs = document.createElement('canvas');
+      cvs.width = COLS; cvs.height = COLS;
+      const c = cvs.getContext('2d');
+      const cx = COLS / 2, cy = COLS / 2, r = (COLS / 2 - 4) * 0.8;
+
+      c.strokeStyle = '#fff';
+      c.lineWidth = 2.5;
+      c.lineCap = 'round';
+
+      // Outer circle outline
+      c.beginPath();
+      c.arc(cx, cy, r, 0, Math.PI * 2);
+      c.stroke();
+
+      // Eye outlines
+      c.lineWidth = 1.5;
+      c.beginPath();
+      c.ellipse(cx - r * 0.28, cy - r * 0.2, r * 0.09, r * 0.13, 0, 0, Math.PI * 2);
+      c.stroke();
+      c.beginPath();
+      c.ellipse(cx + r * 0.28, cy - r * 0.2, r * 0.09, r * 0.13, 0, 0, Math.PI * 2);
+      c.stroke();
+
+      // Smile arc outline
+      c.lineWidth = 2.5;
+      c.beginPath();
+      c.arc(cx, cy + r * 0.08, r * 0.42, 0.28, Math.PI - 0.28);
+      c.stroke();
+
+      const { data } = c.getImageData(0, 0, COLS, COLS);
+      return Array.from({ length: TOTAL }, (_, i) =>
+        data[i * 4 + 3] > 80 && data[i * 4] > 128 ? 1 : 0
+      );
+    }
+
     async function run() {
       const [blvdMap, shopifyMap] = await Promise.all([
         sampleImage('img/BLVD | Logomark White.png', 7),
         sampleImage('img/shopify_glyph_white.png', 4),
       ]);
+      const smileyMap = drawSmiley();
 
-      currentMap = shopifyMap;
-      buildIn(shopifyMap);
+      currentMap = blvdMap;
+      buildIn(blvdMap);
       startAmbientBlink();
 
-      // Auto-loop: Shopify → BLVD → Shopify → …
-      const maps = [blvdMap, shopifyMap];
-      let idx = 1;
+      // Scroll-driven morph: 3 states
+      const blvdPanel    = document.querySelector('.panel-blvd');
+      const shopifyPanel = document.querySelector('.panel-shopify');
+      let state = 'blvd';
+      const allMaps = { blvd: blvdMap, shopify: shopifyMap, smiley: smileyMap };
+      let settleTimer = null;
 
-      async function loop() {
-        await new Promise(r => setTimeout(r, 5000));
-        idx = (idx + 1) % maps.length;
-        morph(maps[(idx + 1) % maps.length], maps[idx]);
-        currentMap = maps[idx];
-        loop();
-      }
+      window.addEventListener('scroll', () => {
+        const blvdTop    = blvdPanel.getBoundingClientRect().top;
+        const shopifyTop = shopifyPanel.getBoundingClientRect().top;
+        const mid = window.innerHeight * 0.5;
 
-      loop();
+        if (state === 'blvd' && blvdTop < mid) {
+          state = 'shopify';
+          morph(blvdMap, shopifyMap);
+          currentMap = shopifyMap;
+        } else if (state === 'shopify' && blvdTop > mid) {
+          state = 'blvd';
+          morph(shopifyMap, blvdMap);
+          currentMap = blvdMap;
+        } else if (state === 'shopify' && shopifyTop < mid) {
+          state = 'smiley';
+          morph(shopifyMap, smileyMap);
+          currentMap = smileyMap;
+        } else if (state === 'smiley' && shopifyTop > mid) {
+          state = 'shopify';
+          morph(smileyMap, shopifyMap);
+          currentMap = shopifyMap;
+        }
+
+        // Settle: after scroll stops, snap grid to correct state if morph is mid-flight
+        clearTimeout(settleTimer);
+        settleTimer = setTimeout(() => {
+          if (morphing) {
+            gsap.killTweensOf(cells);
+            morphing = false;
+            applyMap(allMaps[state]);
+            gsap.set(cells, { opacity: 1, scale: 1 });
+            currentMap = allMaps[state];
+          }
+        }, 250);
+      }, { passive: true });
     }
+
+    // Viewport-aware peek positioning
+    document.querySelectorAll('a.project-row').forEach(row => {
+      row.addEventListener('mouseenter', () => {
+        const rect = row.getBoundingClientRect();
+        const rowMid = rect.top + rect.height / 2;
+        if (rowMid < window.innerHeight / 2) {
+          row.classList.add('peek-below');
+        } else {
+          row.classList.remove('peek-below');
+        }
+      });
+    });
 
     run();
   </script>
