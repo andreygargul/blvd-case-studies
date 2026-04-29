@@ -3,4 +3,5 @@ node_modules/
 *.mp4
 *.MP3
 *.mp3
+!ai-receptionist/media/audio/demo-call-abundant-compressed.mp3
 media/*.webm
