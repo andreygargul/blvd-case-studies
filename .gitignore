@@ -1,3 +1,6 @@
 .DS_Store
+node_modules/
 *.mp4
-ai-receptionist/media/audio/demo-call-abundant.MP3
+*.MP3
+*.mp3
+media/*.webm

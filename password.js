@@ -73,6 +73,21 @@
     #blvd-gate.blvd-bye {
       animation: blvd-fade-out 0.3s ease forwards;
     }
+    #blvd-gate-close {
+      position: absolute;
+      top: 28px;
+      right: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      color: rgba(255, 255, 255, 0.3);
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    #blvd-gate-close:hover {
+      color: rgba(255, 255, 255, 0.7);
+    }
   `;
 
   const styleEl = document.createElement('style');
@@ -83,6 +98,12 @@
     const gate = document.createElement('div');
     gate.id = 'blvd-gate';
     gate.innerHTML = `
+      <button id="blvd-gate-close" aria-label="Go back">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="3" y1="3" x2="17" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="17" y1="3" x2="3" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
       <div id="blvd-gate-eyebrow">This case study is shared privately.<br>Enter the password to continue.</div>
       <input id="blvd-gate-input" type="text" autocomplete="off" readonly spellcheck="false" placeholder="* * * * * * *" />
       <div id="blvd-gate-error"></div>
@@ -91,6 +112,7 @@
 
     const input = document.getElementById('blvd-gate-input');
     const error = document.getElementById('blvd-gate-error');
+    document.getElementById('blvd-gate-close').addEventListener('click', () => history.back());
 
     input.focus();
     input.removeAttribute('readonly');

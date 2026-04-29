@@ -53,6 +53,7 @@
       color: var(--fg);
       font-family: var(--mono);
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
     /* ── Fixed grid background ── */
@@ -105,6 +106,14 @@
     }
 
     .about-link:hover { color: var(--fg); }
+
+    .about-ref-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: default;
+      margin-top: 24px;
+    }
 
     .about-bio-cols {
       display: flex;
@@ -373,6 +382,219 @@
     .section-gap { min-height: 100svh; }
 
     /* ── Responsive ── */
+    /* ── About-right wrapper ── */
+    .about-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 16px;
+    }
+
+    /* ── Testimonial card ── */
+    .testimonial-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 14px 14px 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      text-align: left;
+      color: inherit;
+      font-family: var(--mono);
+      appearance: none;
+      -webkit-appearance: none;
+      opacity: 0;
+      transition: opacity 0.3s ease, background 0.2s ease, border-color 0.2s ease;
+      width: 240px;
+    }
+
+    .testimonial-card:hover,
+    .about-links:has(.about-ref-label:hover) ~ .testimonial-card {
+      border-color: rgba(255,255,255,0.4);
+    }
+
+    .tcard-text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .tcard-label {
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.3;
+      position: relative;
+    }
+
+    .tcard-label-default,
+    .tcard-label-hover {
+      display: block;
+      transition: opacity 0.2s ease;
+    }
+
+    .tcard-label-hover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      white-space: nowrap;
+    }
+
+    .testimonial-card:hover .tcard-label-default { opacity: 0; }
+    .testimonial-card:hover .tcard-label-hover { opacity: 1; }
+
+    .tcard-meta {
+      font-size: 10px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .tcard-duration {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      font-size: 9px;
+      font-weight: 500;
+      color: #fff;
+      background: rgba(0,0,0,0.72);
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.04em;
+    }
+
+    .tcard-thumb {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      border-radius: 4px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .tcard-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .tcard-thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.2);
+      transition: opacity 0.2s ease;
+    }
+
+    .testimonial-card:hover .tcard-thumb::after {
+      opacity: 0;
+    }
+
+
+    /* ── Testimonial modal ── */
+    #testimonial-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      pointer-events: none;
+    }
+
+    #testimonial-modal.open {
+      pointer-events: all;
+    }
+
+    .tmodal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: transparent;
+    }
+
+    .tmodal-inner {
+      position: fixed;
+      width: fit-content;
+      max-width: calc(100vw - 48px);
+      border-radius: 4px;
+      overflow: hidden;
+      background: #000;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08);
+      transform-origin: top right;
+      transform: scale(0.5);
+      opacity: 0;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+    }
+
+    #testimonial-modal.open .tmodal-inner {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .tmodal-progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: rgba(255,255,255,0.1);
+      z-index: 10;
+    }
+
+    .tmodal-bar {
+      height: 100%;
+      width: 0%;
+      background: #ff6b4a;
+    }
+
+
+    .tmodal-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 32px 16px 16px;
+      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .tmodal-info-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .tmodal-info-link:hover { color: #fff; }
+
+    .tmodal-info-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .tmodal-info-meta {
+      font-size: 11px;
+      color: rgba(255,255,255,0.55);
+    }
+
+    #testimonial-video {
+      display: block;
+      height: 60vh;
+      width: auto;
+      max-width: calc(100vw - 48px);
+      cursor: pointer;
+    }
+
     @media (max-width: 700px) {
       /* Padding — consistent 24px horizontal gutter */
       .panel-about { padding: 28px 24px; min-height: 78svh; flex-direction: column; align-items: flex-start; justify-content: flex-start; width: 100%; left: auto; transform: none; }
@@ -380,11 +602,32 @@
       .panel-shopify { padding: 24px 24px; }
 
       /* Bio: constrain line length, stack cols, differentiate sizes */
-      .about-bio-cols { flex-direction: column; gap: 20px; margin-bottom: 20px; }
+      .about-bio-cols { flex-direction: column; gap: 20px; margin-bottom: 16px; }
+      .about-ref-label { margin-top: 0; }
 
       /* Links: row, tighter, slightly brighter */
       .about-links { flex-direction: row; gap: 20px; margin-top: 0; }
       .about-link { color: rgba(255,255,255,0.55); }
+
+      /* Testimonial card: hidden on mobile, reference becomes a direct link */
+      .about-right { width: 100%; align-items: flex-start; margin-top: 0; }
+      .testimonial-card { display: none; }
+      .about-ref-label { cursor: pointer; }
+      .about-ref-label svg { display: none; }
+
+      /* Video modal: centered on mobile */
+      #testimonial-modal .tmodal-inner {
+        left: 50% !important;
+        right: auto !important;
+        max-width: calc(100vw - 32px);
+        transform-origin: top center;
+        transform: translateX(-50%) scale(0.5) !important;
+        opacity: 0;
+      }
+      #testimonial-modal.open .tmodal-inner {
+        transform: translateX(-50%) scale(1) !important;
+        opacity: 1;
+      }
 
       /* Project section: single column */
       .project-section { grid-template-columns: 1fr; gap: 16px; }
@@ -436,9 +679,28 @@
           <p class="about-bio supporting">Previously Staff Designer and Manager at Shopify.</p>
         </div>
       </div>
-      <div class="about-links">
-        <a href="mailto:gargul.andrey@gmail.com" class="about-link">Email</a>
-        <a href="https://linkedin.com/in/andreygargul" class="about-link">LinkedIn</a>
+      <div class="about-right">
+        <div class="about-links">
+          <a href="mailto:gargul.andrey@gmail.com" class="about-link">Email</a>
+          <a href="https://linkedin.com/in/andreygargul" class="about-link">LinkedIn</a>
+          <span class="about-link about-ref-label">
+            Reference
+            <svg width="8" height="10" viewBox="0 0 8 10" fill="none"><line x1="4" y1="0" x2="4" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M1 5.5L4 8.5L7 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+        <button class="testimonial-card" id="testimonial-btn" aria-label="Watch coworker endorsements">
+          <div class="tcard-text">
+            <span class="tcard-label">
+              <span class="tcard-label-default">Indra Pal Singh</span>
+              <span class="tcard-label-hover">Watch video <svg width="8" height="8" viewBox="0 0 8 8" fill="none" style="display:inline;vertical-align:middle;margin-left:2px;"><polygon points="0,0 8,4 0,8" fill="#ff6b4a"/></svg></span>
+            </span>
+            <span class="tcard-meta">Boulevard · Shopify · Hulu · Microsoft</span>
+          </div>
+          <div class="tcard-thumb">
+            <img src="media/indra-testimonial-thumb.jpg" alt="Indra Pal Singh">
+            <span class="tcard-duration">0:53</span>
+          </div>
+        </button>
       </div>
     </div>
 
@@ -617,6 +879,25 @@
       </div>
     </div>
 
+  </div>
+
+  <!-- Testimonial modal -->
+  <div id="testimonial-modal" role="dialog" aria-modal="true" aria-label="Coworker Endorsements">
+    <div class="tmodal-backdrop"></div>
+    <div class="tmodal-inner">
+      <div class="tmodal-progress"><div class="tmodal-bar"></div></div>
+      <video id="testimonial-video" playsinline src="https://pub-ab256c1ca26d4435836b1fa946783de3.r2.dev/indra-testimonial-720.webm"></video>
+      <div class="tmodal-info">
+        <span class="tmodal-info-name">Indra Pal Singh</span>
+        <span class="tmodal-info-meta">Product Leader · Boulevard · Shopify · Microsoft</span>
+        <a class="tmodal-info-link" href="https://www.linkedin.com/in/indrapal/" target="_blank" rel="noopener">
+          LinkedIn
+          <svg width="8" height="8" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 9L9 1M9 1H3.5M9 1V6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
   </div>
 
   <canvas id="sampler" width="64" height="64" style="display:none;"></canvas>
@@ -987,7 +1268,7 @@
 
       // ~3630ms: supporting text, links, section headers, first rows fade in
       setTimeout(() => {
-        document.querySelectorAll('.about-bio.supporting, .about-links').forEach(el => {
+        document.querySelectorAll('.about-bio.supporting, .about-links, .testimonial-card').forEach(el => {
           el.style.opacity = '1';
         });
         document.querySelectorAll('.section-header').forEach(el => {
@@ -1013,6 +1294,55 @@
         allRows.slice(3).forEach(el => rowObserver.observe(el));
       }, 2570);
     });
+
+    // ── Testimonial modal ──
+    const testimonialBtn   = document.getElementById('testimonial-btn');
+    const testimonialModal = document.getElementById('testimonial-modal');
+    const testimonialVideo = document.getElementById('testimonial-video');
+    const tmodalBar        = document.querySelector('.tmodal-bar');
+    const tmodalInner      = document.querySelector('.tmodal-inner');
+    const refLabel         = document.querySelector('.about-ref-label');
+
+    function openTestimonial(anchor) {
+      const isMobile = window.innerWidth <= 700;
+      const rect = (anchor || testimonialBtn).getBoundingClientRect();
+      if (isMobile) {
+        tmodalInner.style.top   = (rect.bottom + 12) + 'px';
+        tmodalInner.style.right = '';
+      } else {
+        tmodalInner.style.top   = rect.top + 'px';
+        tmodalInner.style.right = (window.innerWidth - rect.right) + 'px';
+      }
+      testimonialModal.classList.add('open');
+      testimonialVideo.play();
+    }
+
+    function closeTestimonial() {
+      testimonialModal.classList.remove('open');
+      testimonialVideo.pause();
+      setTimeout(() => {
+        testimonialVideo.currentTime = 0;
+        tmodalBar.style.width = '0%';
+      }, 350);
+    }
+
+    testimonialVideo.addEventListener('click', () => {
+      if (testimonialVideo.paused) testimonialVideo.play();
+      else testimonialVideo.pause();
+    });
+
+    testimonialVideo.addEventListener('timeupdate', () => {
+      if (!testimonialVideo.duration) return;
+      tmodalBar.style.width = (testimonialVideo.currentTime / testimonialVideo.duration * 100) + '%';
+    });
+
+    testimonialBtn.addEventListener('click', () => openTestimonial(testimonialBtn));
+    refLabel.addEventListener('click', () => openTestimonial(refLabel));
+    // Close when clicking outside the video panel
+    document.querySelector('.tmodal-backdrop').addEventListener('click', closeTestimonial);
+    // Prevent clicks inside the panel from closing it
+    tmodalInner.addEventListener('click', e => e.stopPropagation());
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTestimonial(); });
   </script>
 </body>
 </html>
